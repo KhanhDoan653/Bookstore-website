@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Horizon | Shop</title>
+      <link rel="stylesheet" href="css/index.css">
+      <link rel="stylesheet" href="css/shop.css">
+    <link rel="icon" type="image/png" href="img/Ocean_Horizon_Website_Icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+         <div class="bubbles">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+     <header>
+       <a href="index.html"><img src="img/Ocean_Horizon_Website_Icon.png" alt="Ocean Horizon Logo" class="logohd"></a> 
+       <a href="index.html"> Trang Chủ</a>
+       <a href="about.html"> Giới Thiệu</a>
+        
+<!-- Ô tìm kiếm -->
+<form action="#" method="get" class="search-box" onsubmit="return false;">
+  <input type="text" id="searchInput" placeholder="Tìm kiếm sách..." required>
+  <button type="button" onclick="searchProducts()">🔍</button>
+</form>
+  <a href="contact.html">Tư Vấn</a>
+     <a href="shop.html" class="cart-link">
+  Giỏ hàng <span id="cart-count">0</span>
+</a>
+
+       <a href="login.html"> Đăng Nhập</a>
+
+    </header>
+
+
+  <h1>Giỏ Hàng</h1>
+  <table class="cart-table" id="cartTable">
+    <thead>
+      <tr>
+       
+        <th>Sản phẩm</th>
+        <th>Giá</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody id="cartBody">
+      <!-- Sản phẩm sẽ được render ở đây -->
+    </tbody>
+  </table>
+
+  <div class="total" id="cartTotal">Tổng: 0đ</div>
+
+  <div class="empty-cart" id="emptyCartMsg" style="display:none;">
+    Giỏ hàng trống!
+  </div>
+
+
+<!-- Thêm nút Thanh Toán -->
+<div class="checkout-container">
+  <button id="checkoutBtn">Thanh Toán</button>
+</div>
+
+<!-- Popup thanh toán -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Thanh Toán</h2>
+    <p id="modalTotal">Tổng: 0đ</p>
+    <button id="downloadBill">Tải Hóa Đơn</button>
+    <div class="qr-container">
+      <p>Quét mã QR để chuyển khoản:</p>
+      <img src="img/BankQR.jpg" alt="QR Bank" class="qr-code">
+    </div>
+  </div>
+
+
+    <!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Ocean Horizon</h3>
+      <p>Website học tập và tư vấn trực tuyến.<br>Đem lại tri thức mọi lúc, mọi nơi.</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Liên hệ</h3>
+      <p>Email: support@oceanhorizon.com</p>
+      <p>Hotline: +84 123 456 789</p>
+    </div>
+    
+<div class="footer-section">
+  <h3>Kết nối</h3>
+  <div class="social-links">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+  </div>
+</div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Ocean Horizon. All rights reserved.</p>
+  </div>
+</footer>
+ <script>
+   function renderCart() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartBody = document.getElementById('cartBody');
+      const cartTotal = document.getElementById('cartTotal');
+      const emptyCartMsg = document.getElementById('emptyCartMsg');
+
+      cartBody.innerHTML = '';
+      if(cartItems.length === 0) {
+        document.querySelector('.cart-table').style.display = 'none';
+        cartTotal.style.display = 'none';
+        emptyCartMsg.style.display = 'block';
+        return;
+      } else {
+        document.querySelector('.cart-table').style.display = 'table';
+        cartTotal.style.display = 'block';
+        emptyCartMsg.style.display = 'none';
+      }
+
+      let total = 0;
+
+      cartItems.forEach((item, index) => {
+        // Chuyển giá sang số
+        let price = parseInt(item.price.replace(/\D/g,''));
+        total += price;
+
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.price}</td>
+          <td><button class="remove-btn" data-index="${index}">Xóa</button></td>
+        `;
+
+        cartBody.appendChild(tr);
+      });
+
+      cartTotal.innerText = `Tổng: ${total.toLocaleString('vi-VN')}đ`;
+
+      // Xử lý xóa
+      const removeBtns = document.querySelectorAll('.remove-btn');
+      removeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const index = this.dataset.index;
+          cartItems.splice(index, 1);
+          localStorage.setItem('cart', JSON.stringify(cartItems));
+          renderCart();
+        });
+      });
+    }
+
+    window.addEventListener('load', renderCart);
+
+const checkoutBtn = document.getElementById('checkoutBtn');
+const modal = document.getElementById('checkoutModal');
+const closeBtn = modal.querySelector('.close');
+const modalTotal = document.getElementById('modalTotal');
+const downloadBill = document.getElementById('downloadBill');
+
+checkoutBtn.addEventListener('click', () => {
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  let total = 0;
+  cartItems.forEach(item => {
+    total += parseInt(item.price.replace(/\D/g,''));
+  });
+  modalTotal.innerText = `Tổng: ${total.toLocaleString('vi-VN')}đ`;
+  modal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if(e.target === modal) modal.style.display = 'none';
+});
+
+// Tải hóa đơn dưới dạng file text
+downloadBill.addEventListener('click', () => {
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  let content = 'HÓA ĐƠN OCEAN HORIZON\n\n';
+  cartItems.forEach(item => {
+    content += `${item.name} - ${item.price}\n`;
+  });
+  let total = cartItems.reduce((sum, item) => sum + parseInt(item.price.replace(/\D/g,'')), 0);
+  content += `\nTổng: ${total.toLocaleString('vi-VN')}đ\n`;
+  
+  const blob = new Blob([content], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'hoa_don.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+  </script>
+</body>
+</html>

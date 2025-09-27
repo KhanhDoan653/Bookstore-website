@@ -52,3 +52,95 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+
+  // Lấy tất cả icon trong các sản phẩm
+  const hearts = document.querySelectorAll('.product .icon.heart, .product .icon:nth-child(1)');
+  const eyes = document.querySelectorAll('.product .icon.eye, .product .icon:nth-child(2)');
+  const carts = document.querySelectorAll('.product .icon.cart, .product .icon:nth-child(3)');
+  hearts.forEach(heart => {
+    heart.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('liked'); // Giữ trạng thái tim
+    });
+  });
+
+  document.querySelectorAll('.icon').forEach(icon => {
+  if (icon.innerText === '👁️') {
+    icon.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const product = this.closest('.product');
+      const title = product.querySelector('h3').innerText;
+      const price = product.querySelector('.price').innerText;
+      const imgSrc = product.querySelector('img').src;
+      const year = product.getAttribute('data-year');
+      const publisher = product.getAttribute('data-publisher');
+
+
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalPrice').innerText = price;
+      document.getElementById('modalYear').innerText = `Năm xuất bản: ${year}`;
+      document.getElementById('modalPublisher').innerText = `Nhà xuất bản: ${publisher}`;
+      document.getElementById('modalImage').src = imgSrc;
+      document.getElementById('productModal').style.display = 'block';
+    });
+  }
+});
+
+// Đóng modal khi bấm nút X
+document.querySelector('.close-btn').addEventListener('click', function () {
+  document.getElementById('productModal').style.display = 'none';
+});
+
+// Đóng modal khi click ra ngoài
+window.addEventListener('click', function (e) {
+  const modal = document.getElementById('productModal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+  carts.forEach(cart => {
+    cart.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const productName = this.closest('.product').querySelector('h3').innerText;
+      const price = this.closest('.product').querySelector('.price').innerText;
+      // Lưu vào localStorage để demo giỏ hàng
+      let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      cartItems.push({name: productName, price: price});
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      alert(`${productName} đã được thêm vào giỏ hàng!`);
+    });
+  });
+
+  // Cập nhật số lượng giỏ hàng từ localStorage
+function updateCartCount() {
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  document.getElementById('cart-count').innerText = cartItems.length;
+}
+
+// Khi load trang, cập nhật số lượng
+window.addEventListener('load', updateCartCount);
+
+// Nếu bạn muốn thêm hiệu ứng phóng to khi số lượng tăng:
+function animateCart() {
+  const cartCount = document.getElementById('cart-count');
+  cartCount.classList.add('bump');
+  setTimeout(() => cartCount.classList.remove('bump'), 300);
+}
+
+// Khi thêm sản phẩm vào giỏ hàng
+function addToCart(productName, price) {
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  cartItems.push({ name: productName, price: price });
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  updateCartCount();
+  animateCart();
+}
+
+document.querySelectorAll('.heart-icon').forEach(heart => {
+  heart.addEventListener('click', function () {
+    this.classList.toggle('liked');
+  });
+});
+

@@ -439,3 +439,95 @@ header a.active {
   font-size: 14px;
   color: #aaa;
 }
+/* Section Showcase */
+.showcase {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.showcase h2 {
+  font-size: 26px;
+  margin-bottom: 25px;
+  color: #fff; /* Cho đồng bộ với background tối */
+}
+
+.showcase .products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+  justify-content: center; /* Đặt sản phẩm ở giữa */
+  gap: 20px;
+}
+
+/* Responsive cho Showcase */
+@media (max-width: 1024px) {
+  .showcase h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase h2 {
+    font-size: 20px;
+  }
+  .showcase .products {
+    grid-template-columns: 1fr; /* chỉ 1 cột trên mobile */
+  }
+}
+
+.heart-icon {
+  font-size: 24px;
+  color: rgba(255, 0, 0, 0.3); /* Màu đỏ mờ */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.heart-icon.liked {
+  color: red; /* Màu đỏ đậm khi đã thích */
+  transform: scale(1.3); /* Phóng to nhẹ */
+}
+#cart-count {
+  background: red;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-size: 14px;
+  margin-left: 5px;
+  transition: transform 0.3s;
+  display: inline-block;
+}
+
+#cart-count.bump {
+  transform: scale(1.5);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
