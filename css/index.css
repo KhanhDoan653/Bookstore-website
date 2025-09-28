@@ -531,3 +531,73 @@ header a.active {
   font-size: 20px;
   cursor: pointer;
 }
+.membership-section {
+  background: #f0f8ff; /* nền nhẹ nhàng */
+  padding: 60px 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.membership-section h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #013A63;
+}
+
+.membership-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px; /* khoảng cách giữa 2 cột */
+}
+
+.membership-left,
+.membership-right {
+  background: rgba(255, 255, 255, 0.5); /* transparent */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  flex: 1 1 300px; /* co giãn, tối thiểu 300px */
+  max-width: 500px;
+}
+
+.membership-left ul {
+  list-style: disc;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.membership-left ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.membership-pricing {
+  font-size: 18px;
+  text-align: center;
+}
+
+.btn-signup {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #013A63;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+}
+
+.btn-signup:hover {
+  background: #00b7ff;
+  transform: scale(1.05);
+}
+
+/* Responsive: mobile */
+@media (max-width: 768px) {
+  .membership-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

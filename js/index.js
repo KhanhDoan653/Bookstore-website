@@ -143,3 +143,4 @@ document.querySelectorAll('.heart-icon').forEach(heart => {
     this.classList.toggle('liked');
   });
 });
+
