@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Ocean Horizon</title>
+<link rel="stylesheet" href="css/index.css">
+<link rel="icon" type="image/png" href="img/Ocean_Horizon_Website_Icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; }
+  header { background:#004080; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { margin:0; font-size:24px; }
+  .user-info { display:flex; align-items:center; gap:10px; }
+  .user-info span { cursor:pointer; font-weight:bold; }
+  .container { max-width:1000px; margin: auto; padding:20px; background:white; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+  h2 { margin-top: 20px; text-align:center; }
+  #categoryManager, #productManager { margin-bottom:40px; }
+  input, select { padding:8px; margin-right:5px; margin-bottom:10px; width:200px; }
+  button { padding:8px 12px; margin-right:5px; cursor:pointer; }
+  ul { list-style:none; padding:0; }
+  li { margin-bottom:8px; }
+  .admin-product { display:flex; align-items:center; margin-bottom:10px; background:#f1f1f1; padding:10px; border-radius:5px; }
+  .admin-product img { width:60px; height:60px; object-fit:cover; margin-right:10px; border-radius:3px; }
+  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+  .modal-content { background:white; padding:20px; border-radius:5px; width:400px; position:relative; }
+  .modal-content input, .modal-content select { width:100%; margin-bottom:10px; }
+  .close-btn { position:absolute; top:10px; right:15px; cursor:pointer; font-size:20px; }
+ .modal-content h3 {
+  margin: 0;
+  text-align: center;     /* căn giữa chữ */
+  font-weight: bold;      /* chữ in đậm */
+  font-size: 20px;        /* kích thước chữ */
+  color: #0077ff;         /* màu chữ */
+}
+.product-name {
+  color: #000 !important; /* bắt buộc ghi đè */
+  font-weight: bold;
+}
+
+
+
+
+</style>
+</head>
+<body>
+<script src="js/admin.js" defer></script>
+
+<header>
+  <h1>Quản Lý Ocean Horizon</h1>
+       <a href="login.html" id="loginLink">Đăng nhập</a>
+</header>
+
+<div class="container">
+
+  <!-- Quản lý chủ đề -->
+  <section id="categoryManager">
+    <h2>Quản Lý Chủ Đề</h2>
+    <input type="text" id="newCategoryName" placeholder="Tên chủ đề mới">
+    <button id="addCategoryBtn">Thêm Chủ Đề</button>
+    <ul id="categoryList"></ul>
+  </section>
+
+  <!-- Quản lý sản phẩm -->
+  <section id="productManager">
+    <h2>Quản Lý Sản Phẩm</h2>
+    <button id="addProductBtn">Thêm Sản Phẩm</button>
+    <div id="adminProductList"></div>
+  </section>
+
+</div>
+
+<!-- Popup Thêm/Sửa sản phẩm -->
+<div id="productPopup" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h3 id="popupTitle">Thêm Sản Phẩm</h3>
+    <select id="productCategory"></select>
+    <input type="text" id="productName" placeholder="Tên sản phẩm">
+    <input type="text" id="productPrice" placeholder="Giá">
+    <input type="text" id="productOldPrice" placeholder="Giá cũ (nếu có)">
+    <input type="text" id="productPublisher" placeholder="Nhà xuất bản">
+    <input type="text" id="productYear" placeholder="Năm xuất bản">
+    <input type="file" id="productImage" accept="image/*">
+    <button id="saveProductBtn">Lưu</button>
+  </div>
+</div>
+<script>
+let sections = JSON.parse(localStorage.getItem("sections")) || {};
+let products = JSON.parse(localStorage.getItem("products")) || [];
+let editIndex = null;
+
+// --- Chủ đề ---
+function renderCategoryList() {
+  const ul = document.getElementById("categoryList");
+  ul.innerHTML = '';
+  Object.keys(sections).forEach(cat => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${cat} 
+      <button onclick="deleteCategory('${cat}')">Xóa</button>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+document.getElementById("addCategoryBtn").addEventListener("click", () => {
+  const name = document.getElementById("newCategoryName").value.trim();
+  if(!name) return alert("Nhập tên chủ đề!");
+  if(!sections[name]) sections[name] = [];
+  localStorage.setItem("sections", JSON.stringify(sections));
+  document.getElementById("newCategoryName").value = '';
+  renderCategoryList();
+  renderCategoryOptions();
+});
+
+function deleteCategory(name) {
+  if(confirm(`Xóa chủ đề "${name}" và tất cả sản phẩm trong đó?`)) {
+    delete sections[name];
+    localStorage.setItem("sections", JSON.stringify(sections));
+    renderCategoryList();
+    renderAdminProducts();
+    renderCategoryOptions();
+  }
+}
+
+// --- Sản phẩm ---
+const popup = document.getElementById("productPopup");
+const addBtn = document.getElementById("addProductBtn");
+const closeBtn = popup.querySelector(".close-btn");
+const saveBtn = document.getElementById("saveProductBtn");
+const adminList = document.getElementById("adminProductList");
+
+addBtn.addEventListener("click", () => {
+  editIndex = null;
+  popup.style.display = "flex";
+  popup.querySelector("#popupTitle").innerText = "Thêm Sản Phẩm";
+  popup.querySelectorAll("input").forEach(input => input.value = '');
+  renderCategoryOptions();
+});
+
+closeBtn.addEventListener("click", () => popup.style.display = "none");
+
+function renderCategoryOptions() {
+  const select = document.getElementById("productCategory");
+  select.innerHTML = '';
+  select.innerHTML = '<option value="">Chọn chủ đề</option>';
+  Object.keys(sections).forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat; opt.textContent = cat;
+    select.appendChild(opt);
+  });
+}
+
+saveBtn.addEventListener("click", () => {
+  const category = document.getElementById("productCategory").value;
+  const name = document.getElementById("productName").value.trim();
+  const price = document.getElementById("productPrice").value.trim();
+  const oldPrice = document.getElementById("productOldPrice").value.trim();
+  const publisher = document.getElementById("productPublisher").value.trim();
+  const year = document.getElementById("productYear").value.trim();
+  const fileInput = document.getElementById("productImage");
+
+  if(!category || !name || !price) return alert("Điền đầy đủ thông tin!");
+
+  const reader = new FileReader();
+  if(fileInput.files[0]) {
+    reader.readAsDataURL(fileInput.files[0]);
+    reader.onload = () => saveProduct(reader.result);
+  } else saveProduct(editIndex!==null ? products[editIndex].image : '');
+
+  function saveProduct(imgSrc) {
+    const newProduct = {
+      id: editIndex!==null ? products[editIndex].id : Date.now().toString(),
+      name, price, oldPrice, publisher, year, image: imgSrc, stock:true, category
+    };
+
+    if(editIndex!==null) {
+      const oldCat = products[editIndex].category;
+      sections[oldCat] = sections[oldCat].filter(p => p.id!==newProduct.id);
+      products[editIndex] = newProduct;
+    } else products.push(newProduct);
+
+    if(!sections[category]) sections[category] = [];
+    const idx = sections[category].findIndex(p=>p.id===newProduct.id);
+    if(idx>=0) sections[category][idx] = newProduct;
+    else sections[category].push(newProduct);
+
+    localStorage.setItem("products", JSON.stringify(products));
+    localStorage.setItem("sections", JSON.stringify(sections));
+    popup.style.display = "none";
+    renderAdminProducts();
+    renderCategoryList();
+  }
+});
+function renderAdminProducts() {
+  adminList.innerHTML = '';
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "admin-product";
+   div.innerHTML = `
+  <img src="${p.image}" alt="${p.name}">
+  <span class="product-name">${p.name} (${p.category}) - ${p.price}đ</span>
+  <button onclick="editProduct('${p.category}','${p.id}')">Sửa</button>
+  <button onclick="deleteProductById('${p.id}')">Xóa</button>
+`;
+    adminList.appendChild(div);
+  });
+}
+
+// --- Xóa sản phẩm ---
+function deleteProductById(id){
+  if(confirm("Bạn có chắc muốn xóa sản phẩm này?")){
+    const prodIndex = products.findIndex(p => p.id===id);
+    if(prodIndex >=0){
+      const cat = products[prodIndex].category;
+      products.splice(prodIndex,1);
+      // Kiểm tra sections[cat] trước khi filter
+      if(sections[cat]) {
+        sections[cat] = sections[cat].filter(p=>p.id!==id);
+      }
+      localStorage.setItem("products", JSON.stringify(products));
+      localStorage.setItem("sections", JSON.stringify(sections));
+      renderAdminProducts();
+      renderCategoryList();
+    }
+  }
+}
+
+
+function editProduct(cat, id) {
+  const idx = products.findIndex(p => p.id === id);
+  if (idx < 0) return;
+  editIndex = idx;
+  const p = products[idx];
+  
+  popup.style.display = "flex";
+  popup.querySelector("#popupTitle").innerText = "Sửa Sản Phẩm";
+
+  // 1. Render tất cả chủ đề trước
+  renderCategoryOptions();
+
+  // 2. Chọn chủ đề hiện tại
+  document.getElementById("productCategory").value = cat;
+
+  // 3. Điền thông tin sản phẩm
+  document.getElementById("productName").value = p.name;
+  document.getElementById("productPrice").value = p.price;
+  document.getElementById("productOldPrice").value = p.oldPrice;
+  document.getElementById("productPublisher").value = p.publisher;
+  document.getElementById("productYear").value = p.year;
+  document.getElementById("productImage").value = '';
+}
+
+
+function toggleStock(cat,i){
+  sections[cat][i].stock = !sections[cat][i].stock;
+  localStorage.setItem("sections", JSON.stringify(sections));
+  renderAdminProducts();
+}
+
+// Khởi tạo
+renderCategoryList();
+renderAdminProducts();
+</script>
+</body>
+</html>
