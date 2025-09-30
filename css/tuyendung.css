@@ -1,0 +1,45 @@
+body {
+  background-image: url("../img/OceanTuyenDung.jpg");
+  background-size: cover;       /* Hình vừa với màn hình */
+  background-repeat: no-repeat; /* Không lặp lại hình */
+  background-position: center;  /* Canh giữa hình */
+  color: #fff;                  /* Chữ mặc định màu trắng */
+}
+
+/* Nội dung trang tuyển dụng */
+.recruitment {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* Tiêu đề */
+.recruitment h1, 
+.recruitment h2 {
+  color: #fff;
+}
+
+/* Bảng quyền lợi */
+.benefits-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: rgba(0, 0, 0, 0.5); /* nền mờ để dễ đọc */
+  color: #fff;
+}
+
+.benefits-table th, 
+.benefits-table td {
+  border: 1px solid #fff; /* viền trắng */
+  padding: 12px;
+  text-align: left;
+}
+
+.benefits-table th {
+  background: rgba(0, 119, 182, 0.8); /* xanh trong mờ */
+  color: #fff;
+}
+
+.benefits-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.1); /* hàng chẵn nền nhạt mờ */
+}

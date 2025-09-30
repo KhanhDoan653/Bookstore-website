@@ -601,3 +601,46 @@ header a.active {
     gap: 20px;
   }
 }
+
+/* Bọc dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Nút chính */
+.dropbtn {
+ 
+  text-decoration: none;
+  padding: 10px;
+  display: inline-block;
+}
+
+/* Nội dung xổ xuống */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 99;
+  border-radius: 15px;
+}
+
+/* Link trong dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Hover đổi màu */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Khi hover vào "Giới Thiệu" thì hiện menu */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
