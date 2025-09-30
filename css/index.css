@@ -644,3 +644,101 @@ header a.active {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.user-menu {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.username {
+  font-weight: bold;
+  color: #333;
+}
+
+.dropdown-user {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 1000;
+}
+
+.dropdown-user a {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-user a:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-user.show {
+  display: block;
+}
+
+/* Popup hồ sơ */
+.profile-popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.profile-popup .popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+.profile-popup img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-popup h3 {
+  margin: 10px 0;
+}
+
+.profile-popup p {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.profile-popup button {
+  padding: 8px 15px;
+  background: #0077b6;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.profile-popup button:hover {
+  background: #005f87;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.username {
+  color: #fff;
+}
