@@ -794,23 +794,30 @@
 
   <!-- Header -->
   <header>
-    <a href="index.html"><img src="img/Ocean_Horizon_Website_Icon.png" alt="Ocean Horizon Logo" class="logohd"></a>
-    <a href="index.html"> Trang Chủ</a>
-    <a href="about.html"> Giới Thiệu</a>
+       <a href="index.html"><img src="img/Ocean_Horizon_Website_Icon.png" alt="Ocean Horizon Logo" class="logohd"></a> 
+       <a href="index.html"> Trang Chủ</a>
+         <!-- Dropdown -->
+  <div class="dropdown">
+    <a href="about.html" class="dropbtn">Giới Thiệu</a>
+    <div class="dropdown-content">
+      <a href="tuyendung.html">Tuyển Dụng</a>
+    </div>
+  </div>
 
-    <!-- Ô tìm kiếm -->
-    <form action="#" method="get" class="search-box" onsubmit="return false;">
-      <input type="text" id="searchInput" placeholder="Tìm kiếm sách..." required>
-      <button type="button" onclick="searchProducts()">🔍</button>
-    </form>
-    <a href="contact.html">Tư Vấn</a>
-    <a href="shop.html" class="cart-link">
-      Giỏ hàng <span id="cart-count">0</span>
-    </a>
+        
+<!-- Ô tìm kiếm -->
+<form action="#" method="get" class="search-box" onsubmit="return false;">
+  <input type="text" id="searchInput" placeholder="Tìm kiếm sách..." required>
+  <button type="button" onclick="searchProducts()">🔍</button>
+</form>
+  <a href="contact.html">Tư Vấn</a>
+     <a href="shop.html" class="cart-link">
+  Giỏ hàng <span id="cart-count">0</span>
+</a>
 
-    <a href="login.html"> Đăng Nhập</a>
+       <a href="login.html"> Đăng Nhập</a>
 
-  </header>
+    </header>
 
   <!-- Nội dung -->
   <section class="about-section">
