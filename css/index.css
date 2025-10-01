@@ -619,3 +619,27 @@ header a.active {
   color: #00244b !important; /* bắt buộc ghi đè */
   font-weight: bold;
 }
+
+.social-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .social-links a {
+      background: rgba(255, 255, 255, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: #0ff;
+      color: #002f4b;
+      transform: scale(1.1);
+    }
