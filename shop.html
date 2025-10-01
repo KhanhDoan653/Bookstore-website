@@ -49,31 +49,30 @@
 
 
   <h1>Giỏ Hàng</h1>
-  <table class="cart-table" id="cartTable">
-    <thead>
-      <tr>
-       
-        <th>Sản phẩm</th>
-        <th>Giá</th>
-        <th>Xóa</th>
-      </tr>
-    </thead>
-    <tbody id="cartBody">
-      <!-- Sản phẩm sẽ được render ở đây -->
-    </tbody>
-  </table>
+<table class="cart-table" id="cartTable">
+  <thead>
+    <tr>
+      <th>Sản phẩm</th>
+      <th>Giá</th>
+      <th>Số lượng</th>
+      <th>Xóa</th>
+    </tr>
+  </thead>
+  <tbody id="cartBody">
+    <!-- Render sản phẩm -->
+  </tbody>
+</table>
 
-  <div class="total" id="cartTotal">Tổng: 0đ</div>
-
-  <div class="empty-cart" id="emptyCartMsg" style="display:none;">
-    Giỏ hàng trống!
-  </div>
-
-
-<!-- Thêm nút Thanh Toán -->
-<div class="checkout-container">
+<!-- Gom Tổng + Nút Thanh Toán vào chung -->
+<div class="cart-footer">
+  <div class="total" id="cart-total">Tổng: 0đ</div>
   <button id="checkoutBtn">Thanh Toán</button>
 </div>
+
+<div class="empty-cart" id="emptyCartMsg" style="display:none;">
+  Giỏ hàng trống!
+</div>
+
 
 <!-- Popup thanh toán -->
 <div id="checkoutModal" class="modal">
@@ -91,100 +90,164 @@
 
 
  <script>
-   function renderCart() {
-      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-      const cartBody = document.getElementById('cartBody');
-      const cartTotal = document.getElementById('cartTotal');
-      const emptyCartMsg = document.getElementById('emptyCartMsg');
+/* Helper: parse price string -> integer (đồng) */
+function parsePrice(val) {
+  if (val == null) return 0;
+  if (typeof val === "number" && !isNaN(val)) return Math.trunc(val);
+  const digits = val.toString().replace(/[^\d]/g, "");
+  return digits ? parseInt(digits, 10) : 0;
+}
+function formatPrice(n) {
+  return n.toLocaleString("vi-VN") + "đ";
+}
 
-      cartBody.innerHTML = '';
-      if(cartItems.length === 0) {
-        document.querySelector('.cart-table').style.display = 'none';
-        cartTotal.style.display = 'none';
-        emptyCartMsg.style.display = 'block';
-        return;
-      } else {
-        document.querySelector('.cart-table').style.display = 'table';
-        cartTotal.style.display = 'block';
-        emptyCartMsg.style.display = 'none';
-      }
+/* Lấy tất cả sản phẩm từ sections (fallback sang products) */
+function getAllProducts() {
+  const sections = JSON.parse(localStorage.getItem("sections")) || {};
+  let all = Object.values(sections).flat();
+  if (!all || all.length === 0) {
+    all = JSON.parse(localStorage.getItem("products")) || [];
+  }
+  return all;
+}
+function getProductById(id) {
+  if (!id) return null;
+  return getAllProducts().find(p => p.id === id) || null;
+}
 
+/* Cập nhật số lượng hiển thị ở header */
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const count = cart.reduce((s, it) => s + (Number(it.quantity) || 0), 0);
+  const el = document.getElementById("cart-count");
+  if (el) el.innerText = count;
+}
+
+/* Render giỏ hàng */
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const tbody = document.getElementById("cartBody");
+  const totalEl = document.getElementById("cart-total");
+  const emptyMsg = document.getElementById("emptyCartMsg");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const table = document.querySelector(".cart-table");
+
+  tbody.innerHTML = "";
+  let total = 0;
+
+  if (cart.length === 0) {
+    if (table) table.style.display = "none";
+    if (emptyMsg) emptyMsg.style.display = "block";
+    if (totalEl) totalEl.innerText = "Tổng: 0đ";
+    if (checkoutBtn) checkoutBtn.style.display = "none";
+    updateCartCount();
+    return;
+  } else {
+    if (table) table.style.display = "table";
+    if (emptyMsg) emptyMsg.style.display = "none";
+    if (checkoutBtn) checkoutBtn.style.display = "inline-block";
+  }
+
+  cart.forEach((item, idx) => {
+    const product = getProductById(item.id);
+    if (!product) return; // nếu sp bị xóa trên admin vẫn an toàn
+
+    const priceNum = parsePrice(product.price);
+    const qty = Number(item.quantity) || 1;
+    total += priceNum * qty;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${product.name || "Sản phẩm"}</td>
+      <td>${formatPrice(priceNum)}</td>
+      <td>${qty}</td>
+      <td><button class="remove-btn" data-index="${idx}">Xóa</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if (totalEl) totalEl.innerText = `Tổng: ${formatPrice(total)}`;
+
+  /* Gắn sự kiện XÓA theo index (an toàn) */
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.index);
+      if (isNaN(index)) return;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+      updateCartCount();
+    });
+  });
+
+  updateCartCount();
+}
+
+/* Checkout: mở modal và hiển thị tổng chính xác (lấy từ sections) */
+document.addEventListener("DOMContentLoaded", () => {
+  renderCart();
+  updateCartCount();
+
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const modal = document.getElementById("checkoutModal");
+  const modalTotal = document.getElementById("modalTotal");
+  const closeBtn = modal ? modal.querySelector(".close") : null;
+  const downloadBill = document.getElementById("downloadBill");
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let total = 0;
+      cart.forEach(item => {
+        const product = getProductById(item.id);
+        if (!product) return;
+        const priceNum = parsePrice(product.price);
+        const qty = Number(item.quantity) || 1;
+        total += priceNum * qty;
+      });
+      if (modalTotal) modalTotal.innerText = `Tổng: ${formatPrice(total)}`;
+      if (modal) modal.style.display = "flex";
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", () => {
+    if (modal) modal.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  /* Download bill: tạo file text với tên, đơn giá, qty, line total, tổng */
+  if (downloadBill) {
+    downloadBill.addEventListener("click", () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let content = "HÓA ĐƠN OCEAN HORIZON\n\n";
       let total = 0;
 
-      cartItems.forEach((item, index) => {
-        // Chuyển giá sang số
-        let price = parseInt(item.price.replace(/\D/g,''));
-        total += price;
-
-        const tr = document.createElement('tr');
-
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.price}</td>
-          <td><button class="remove-btn" data-index="${index}">Xóa</button></td>
-        `;
-
-        cartBody.appendChild(tr);
+      cart.forEach(item => {
+        const product = getProductById(item.id);
+        if (!product) return;
+        const priceNum = parsePrice(product.price);
+        const qty = Number(item.quantity) || 1;
+        const line = priceNum * qty;
+        total += line;
+        content += `${product.name || "Sản phẩm"} - ${formatPrice(priceNum)} x${qty} = ${formatPrice(line)}\n`;
       });
 
-      cartTotal.innerText = `Tổng: ${total.toLocaleString('vi-VN')}đ`;
-
-      // Xử lý xóa
-      const removeBtns = document.querySelectorAll('.remove-btn');
-      removeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const index = this.dataset.index;
-          cartItems.splice(index, 1);
-          localStorage.setItem('cart', JSON.stringify(cartItems));
-          renderCart();
-        });
-      });
-    }
-
-    window.addEventListener('load', renderCart);
-
-const checkoutBtn = document.getElementById('checkoutBtn');
-const modal = document.getElementById('checkoutModal');
-const closeBtn = modal.querySelector('.close');
-const modalTotal = document.getElementById('modalTotal');
-const downloadBill = document.getElementById('downloadBill');
-
-checkoutBtn.addEventListener('click', () => {
-  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  let total = 0;
-  cartItems.forEach(item => {
-    total += parseInt(item.price.replace(/\D/g,''));
-  });
-  modalTotal.innerText = `Tổng: ${total.toLocaleString('vi-VN')}đ`;
-  modal.style.display = 'flex';
+      content += `\nTổng: ${formatPrice(total)}\n`;
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "hoa_don.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
 });
 
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if(e.target === modal) modal.style.display = 'none';
-});
-
-// Tải hóa đơn dưới dạng file text
-downloadBill.addEventListener('click', () => {
-  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  let content = 'HÓA ĐƠN OCEAN HORIZON\n\n';
-  cartItems.forEach(item => {
-    content += `${item.name} - ${item.price}\n`;
-  });
-  let total = cartItems.reduce((sum, item) => sum + parseInt(item.price.replace(/\D/g,'')), 0);
-  content += `\nTổng: ${total.toLocaleString('vi-VN')}đ\n`;
-  
-  const blob = new Blob([content], {type: 'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'hoa_don.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-});
 document.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.getElementById("loginLink");
   const users = JSON.parse(localStorage.getItem("users")) || {};
@@ -246,6 +309,7 @@ if (!loginLink) return;
     });
   }
 });
-  </script>
+</script>
+
 </body>
 </html>

@@ -276,20 +276,22 @@ saveBtn.addEventListener("click", () => {
 
   if(!category || !name || !price) return alert("Điền đầy đủ thông tin!");
 
-  const reader = new FileReader();
-  if(fileInput.files[0]) {
-    reader.readAsDataURL(fileInput.files[0]);
-    reader.onload = () => saveProduct(reader.result);
-  } else saveProduct(editIndex!==null ? products[editIndex].image : '');
+  // lấy đường dẫn ảnh (nếu có upload)
+  let imgPath = editIndex!==null ? products[editIndex].image : "";
+  if (fileInput.files[0]) {
+    imgPath = `img/${fileInput.files[0].name}`;
+  }
+
+  saveProduct(imgPath);
 
   function saveProduct(imgSrc) {
-      const newProduct = {
-    id: editIndex!==null ? products[editIndex].id : Date.now().toString(),
-    name, price, oldPrice, publisher, year,
-    image: fileInput.files[0] ? `img/${fileInput.files[0].name}` : imgSrc, 
-    stock: true,
-    category
-  };
+    const newProduct = {
+      id: editIndex!==null ? products[editIndex].id : Date.now().toString(),
+      name, price, oldPrice, publisher, year,
+      image: imgSrc, // chỉ lưu đường dẫn
+      stock: true,
+      category
+    };
 
     if(editIndex!==null) {
       const oldCat = products[editIndex].category;
@@ -309,6 +311,7 @@ saveBtn.addEventListener("click", () => {
     renderCategoryList();
   }
 });
+
 function renderAdminProducts() {
   adminList.innerHTML = '';
   products.forEach(p => {

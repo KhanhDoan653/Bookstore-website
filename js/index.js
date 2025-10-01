@@ -132,24 +132,22 @@ function renderSections() {
       `;
       productContainer.appendChild(productEl);
 
-   // --- Xử lý nút ❤️ Thích ---
+  // --- Xử lý nút ❤️ Thích ---
 const heartBtn = productEl.querySelector(".heart-icon");
 
 // Kiểm tra trạng thái lúc load
 let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-heartBtn.style.color = wishlist.find(item => item.id === p.id) ? "red" : "rgba(0,0,0,0.3)";
+heartBtn.style.color = wishlist.includes(p.id) ? "red" : "rgba(0,0,0,0.3)";
 
 heartBtn.addEventListener("click", () => {
   let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-  const idx = wishlist.findIndex(item => item.id === p.id);
+  const idx = wishlist.indexOf(p.id);
 
-  if(idx >= 0){
-    // Bỏ thích
-    wishlist.splice(idx,1);
+  if (idx >= 0) {
+    wishlist.splice(idx, 1); // Xóa nếu đã có
     heartBtn.style.color = "rgba(0,0,0,0.3)";
   } else {
-    // Thêm thích
-    wishlist.push(p);
+    wishlist.push(p.id); // chỉ lưu id
     heartBtn.style.color = "red";
   }
 
@@ -183,22 +181,25 @@ window.addEventListener("click", (e) => {
 });
 
       // --- Xử lý nút 🛒 Giỏ hàng ---
-      productEl.querySelector(".cart-icon").addEventListener("click", () => {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const idx = cart.findIndex(item => item.id === p.id);
-        if(idx >= 0) {
-          cart[idx].quantity += 1;
-        } else {
-          cart.push({...p, quantity: 1});
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`Đã thêm "${p.name}" vào giỏ hàng!`);
-        updateCartCount();
-      });
+   // --- Xử lý nút 🛒 Giỏ hàng ---
+productEl.querySelector(".cart-icon").addEventListener("click", () => {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const idx = cart.findIndex(item => item.id === p.id);
+
+  if (idx >= 0) {
+    cart[idx].quantity += 1;
+  } else {
+    cart.push({ id: p.id, quantity: 1 }); // chỉ lưu id + số lượng
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`Đã thêm "${p.name}" vào giỏ hàng!`);
+  updateCartCount();
+});
     });
   });
 }
-
+ 
 // --- Đóng modal ---
 document.querySelector("#productModal .close-btn").addEventListener("click", () => {
   document.getElementById("productModal").style.display = "none";
