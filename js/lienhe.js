@@ -1,50 +1,67 @@
-// Form validation and submission handling
-function validateForm() {
-    // Get form inputs
-    const nameInput = document.querySelector('.contact-right input[type="text"]');
-    const emailInput = document.querySelector('.contact-right input[type="email"]');
-    const messageInput = document.querySelector('.contact-right textarea');
-    
-    // Get values
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contactForm");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // Lấy input
+    const nameInput = form.querySelector('input[name="name"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const phoneInput = form.querySelector('input[name="phone"]');
+    const messageInput = form.querySelector('textarea[name="message"]');
+
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
+    const phone = phoneInput.value.trim();
     const message = messageInput.value.trim();
-    
-    // Regular expression for email validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    // Validation checks
-    if (name === '') {
-        alert('Vui lòng nhập họ tên của bạn.');
-        nameInput.focus();
-        return false;
-    }
-    
-    if (!emailPattern.test(email)) {
-        alert('Vui lòng nhập email hợp lệ.');
-        emailInput.focus();
-        return false;
-    }
-    
-    if (message === '') {
-        alert('Vui lòng nhập nội dung lời nhắn.');
-        messageInput.focus();
-        return false;
-    }
-    
-    // If validation passes, show success message and reset form
-    alert('Cảm ơn bạn đã gửi lời nhắn! Chúng tôi sẽ liên hệ sớm nhất có thể.');
-    nameInput.value = '';
-    emailInput.value = '';
-    messageInput.value = '';
-    
-    return false; // Prevent form submission (for demo purposes; remove if integrating with a backend)
-}
 
-// Add event listener to form submission
-document.querySelector('.contact-right form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
-    validateForm();
+    // Regex email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate
+    if (name === "") {
+      alert("Vui lòng nhập họ tên của bạn.");
+      nameInput.focus();
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      alert("Vui lòng nhập email hợp lệ.");
+      emailInput.focus();
+      return;
+    }
+
+    if (phone === "") {
+      alert("Vui lòng nhập số điện thoại.");
+      phoneInput.focus();
+      return;
+    }
+
+    if (message === "") {
+      alert("Vui lòng nhập nội dung lời nhắn.");
+      messageInput.focus();
+      return;
+    }
+
+    // Gửi dữ liệu qua Formspree
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      });
+
+      if (response.ok) {
+        alert("Cảm ơn bạn đã gửi lời nhắn! Chúng tôi sẽ liên hệ sớm nhất có thể.");
+        form.reset();
+      } else {
+        alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+      }
+    } catch (error) {
+      alert("Không thể kết nối tới server. Vui lòng kiểm tra lại.");
+    }
+  });
 });
 
 

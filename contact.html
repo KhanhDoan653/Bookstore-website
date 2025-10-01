@@ -57,13 +57,14 @@
 
             <div class="contact-right">
                 <h3>Gửi lời nhắn</h3>
-                <form>
-                    <input type="text" placeholder="Họ tên của bạn" required />
-                    <input type="email" placeholder="Email" required />
-                    <input type="text" placeholder="Số điện thoại" required />
-                    <textarea rows="5" placeholder="Nội dung lời nhắn" required></textarea>
-                    <button type="submit">Gửi đi</button>
-                </form>
+               <form id="contactForm" action="https://formspree.io/f/xqayqvge" method="POST">
+  <input type="text" name="name" placeholder="Họ tên của bạn" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="text" name="phone" placeholder="Số điện thoại" required />
+  <textarea name="message" rows="5" placeholder="Nội dung lời nhắn" required></textarea>
+  <button type="submit">Gửi đi</button>
+</form>
+
             </div>
         </div>
         <section class="store-contacts">
