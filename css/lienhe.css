@@ -277,21 +277,7 @@ header a.active {
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-.cart-count {
-    position: absolute;
-    top: -10px; /* Đẩy số lượng lên cao hơn */
-    right: -10px; /* Điều chỉnh sang phải */
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 /* Footer */
 .footer {
   background: linear-gradient(135deg, #002f4b, #005f73, #0b6fa4);
