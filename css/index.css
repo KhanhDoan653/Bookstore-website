@@ -1,6 +1,7 @@
 body{
-   background: linear-gradient(160deg, #013A63 0%, #004E7A 50%, #0077A3 100%);
-     background-attachment: fixed;
+ background: linear-gradient(160deg, #001F3F 0%, #003459 50%, #005377 100%);
+background-attachment: fixed;
+
 }
 
 /* Reset mặc định cho link */

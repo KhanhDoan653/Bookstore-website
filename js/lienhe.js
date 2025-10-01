@@ -47,6 +47,7 @@ document.querySelector('.contact-right form').addEventListener('submit', functio
     validateForm();
 });
 
+
 document.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.getElementById("loginLink");
   const users = JSON.parse(localStorage.getItem("users")) || {};
