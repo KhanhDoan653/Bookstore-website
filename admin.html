@@ -362,29 +362,6 @@ li:hover {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* --- Nút Lên Đầu Trang --- */
-#scrollTopBtn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #0077b6; /* xanh dương biển */
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  display: none; /* Mặc định ẩn */
-  z-index: 999;
-}
-
-#scrollTopBtn:hover {
-  background-color: #00b4d8;
-  transform: scale(1.1);
-}
 
 /* =======================
 🎆 EVENT POPUP STYLE 🎆
@@ -565,7 +542,8 @@ li:hover {
     <a href="login.html" id="loginLink">Đăng nhập</a>
   </div>
 </header>
-
+</div>
+ 
 
 <div class="container">
 
@@ -591,11 +569,7 @@ li:hover {
     <div id="adminProductList"></div>
   </section>
 
-</div>
-  <!-- Nút lên đầu trang -->
-<button id="scrollTopBtn" title="Lên đầu trang">
-  <i class="fas fa-arrow-up"></i>
-</button>
+
 
 <!-- Popup Thêm/Sửa sản phẩm -->
 <div id="productPopup" class="modal">
@@ -608,6 +582,7 @@ li:hover {
     <input type="text" id="productOldPrice" placeholder="Giá cũ (nếu có)">
     <input type="text" id="productPublisher" placeholder="Nhà xuất bản">
     <input type="text" id="productYear" placeholder="Năm xuất bản">
+    <input type="text" id="productDescription" placeholder="Mô tả sản phẩm">
     <input type="file" id="productImage" accept="image/*">
     <button id="saveProductBtn">Lưu</button>
   </div>
@@ -630,7 +605,12 @@ li:hover {
     <div id="bookSelectList" style="max-height:150px; overflow:auto; background:rgba(10,52,96,0.5); padding:10px; border-radius:8px;"></div>
     <button id="saveEventBtn">Lưu Sự Kiện</button>
   </div>
+
+
 </div>
+<!-- Nút Lên Đầu Trang -->
+<button id="scrollTopBtn" title="Lên đầu trang">↑</button>
+
 <script>
 let sections = JSON.parse(localStorage.getItem("sections")) || {};
 let products = JSON.parse(localStorage.getItem("products")) || [];
@@ -706,7 +686,7 @@ saveBtn.addEventListener("click", () => {
   const publisher = document.getElementById("productPublisher").value.trim();
   const year = document.getElementById("productYear").value.trim();
   const fileInput = document.getElementById("productImage");
-
+const description = document.getElementById("productDescription").value.trim();
   if(!category || !name || !price) return alert("Điền đầy đủ thông tin!");
 
   // lấy đường dẫn ảnh (nếu có upload)
@@ -719,12 +699,17 @@ saveBtn.addEventListener("click", () => {
 
   function saveProduct(imgSrc) {
     const newProduct = {
-      id: editIndex!==null ? products[editIndex].id : Date.now().toString(),
-      name, price, oldPrice, publisher, year,
-      image: imgSrc, // chỉ lưu đường dẫn
-      stock: true,
-      category
-    };
+  id: editIndex!==null ? products[editIndex].id : Date.now().toString(),
+  name,
+  price,
+  oldPrice,
+  publisher,
+  year,
+  image: imgSrc,
+  description,  // thêm dòng này
+  stock: true,
+  category
+};
 
     if(editIndex!==null) {
       const oldCat = products[editIndex].category;
@@ -753,9 +738,11 @@ function renderAdminProducts() {
    div.innerHTML = `
   <img src="${p.image}" alt="${p.name}">
   <span class="product-name">${p.name} (${p.category}) - ${p.price}đ</span>
+  <p style="font-size:13px; color:#CAF0F8;">${p.description}</p>
   <button onclick="editProduct('${p.category}','${p.id}')">Sửa</button>
   <button onclick="deleteProductById('${p.id}')">Xóa</button>
 `;
+
     adminList.appendChild(div);
   });
 }
@@ -779,7 +766,6 @@ function deleteProductById(id){
   }
 }
 
-
 function editProduct(cat, id) {
   const idx = products.findIndex(p => p.id === id);
   if (idx < 0) return;
@@ -801,8 +787,10 @@ function editProduct(cat, id) {
   document.getElementById("productOldPrice").value = p.oldPrice;
   document.getElementById("productPublisher").value = p.publisher;
   document.getElementById("productYear").value = p.year;
-  document.getElementById("productImage").value = '';
+  document.getElementById("productDescription").value = p.description || ''; // điền mô tả
+  document.getElementById("productImage").value = ''; // ảnh không thể set được
 }
+
 
 
 function toggleStock(cat,i){

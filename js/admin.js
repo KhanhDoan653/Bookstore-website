@@ -74,20 +74,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- Nút Lên Đầu Trang ---
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-window.onscroll = function() {
+// Hiện nút khi cuộn quá 300px
+window.addEventListener("scroll", () => {
   if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
     scrollTopBtn.style.display = "block";
   } else {
     scrollTopBtn.style.display = "none";
   }
-};
+});
 
+// Khi click, cuộn lên đầu trang
 scrollTopBtn.addEventListener("click", () => {
   window.scrollTo({
     top: 0,
-    behavior: "smooth"
+    behavior: "smooth" // cuộn mượt
   });
 });

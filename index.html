@@ -84,16 +84,21 @@
   <!-- JS sẽ thêm các thẻ .product vào đây -->
 </div>
   
-<div id="productModal" class="modal">
-  <div class="modal-content">
+<div id="productModal" class="modal-detail">
+  <div class="modal-detail-content">
     <span class="close-btn">&times;</span>
-    <h3 id="modalTitle"></h3>
-    <p id="modalPrice"></p>
-     <p id="modalPublisher"></p>
-    <p id="modalYear"></p>
-    <img id="modalImage" src="" alt="Ảnh sản phẩm">
+    <div class="modal-detail-left">
+      <img id="modalImage" src="" alt="Ảnh sách">
+    </div>
+    <div class="modal-detail-right">
+      <h2 id="modalTitle"></h2>
+      <p id="modalPublisher"></p>
+      <p id="modalYear"></p>
+      <p id="modalDescription"></p>
+    </div>
   </div>
 </div>
+
 
 <section id="membership" class="membership-section">
   <div class="container">

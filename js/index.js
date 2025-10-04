@@ -264,29 +264,30 @@ heartBtn.addEventListener("click", () => {
 
 
    // --- Xử lý nút 👁️ Xem ---
-const viewBtn = productEl.querySelector(".view-icon");
-viewBtn.addEventListener("click", () => {
+productEl.querySelector(".view-icon").addEventListener("click", () => {
   const modal = document.getElementById("productModal");
+
   modal.querySelector("#modalTitle").innerText = p.name;
-  modal.querySelector("#modalPrice").innerText = `Giá: ${p.price}đ`;
   modal.querySelector("#modalPublisher").innerText = `NXB: ${p.publisher || ""}`;
   modal.querySelector("#modalYear").innerText = `Năm: ${p.year || ""}`;
+  modal.querySelector("#modalDescription").innerText = p.description || "";
   modal.querySelector("#modalImage").src = p.image || "img/default.png";
-  
+
   modal.style.display = "flex";
 });
 
-// --- Đóng popup ---
-const closeBtn = document.querySelector("#productModal .close-btn");
-closeBtn.addEventListener("click", () => {
+
+// Đóng popup
+document.querySelector("#productModal .close-btn").addEventListener("click", () => {
   document.getElementById("productModal").style.display = "none";
 });
 
-// Đóng nếu click ra ngoài modal
+// Đóng nếu click ra ngoài
 window.addEventListener("click", (e) => {
   const modal = document.getElementById("productModal");
   if (e.target === modal) modal.style.display = "none";
 });
+
 
       // --- Xử lý nút 🛒 Giỏ hàng ---
    // --- Xử lý nút 🛒 Giỏ hàng ---

@@ -1,10 +1,3 @@
-body {
-  background-image: url("../img/OceanTuyenDung.jpg");
-  background-size: cover;       /* Hình vừa với màn hình */
-  background-repeat: no-repeat; /* Không lặp lại hình */
-  background-position: center;  /* Canh giữa hình */
-  color: #fff;                  /* Chữ mặc định màu trắng */
-}
 
 /* Nội dung trang tuyển dụng */
 .recruitment {
@@ -15,7 +8,8 @@ body {
 
 /* Tiêu đề */
 .recruitment h1, 
-.recruitment h2 {
+.recruitment h2, 
+.recruitment p {
   color: #fff;
 }
 
