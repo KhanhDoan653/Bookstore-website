@@ -118,19 +118,127 @@ function renderSections() {
     sections[sectionName].forEach(p => {
       const productEl = document.createElement("div");
       productEl.className = "product";
+       productEl.style.position = "relative";
       productEl.style.opacity = p.stock ? "1" : "0.5";
       productEl.innerHTML = `
-        <img src="${p.image}" alt="${p.name}">
-        <div class="product-icons">
-          <span class="heart-icon">❤️</span>
-          <span class="view-icon">👁️</span>
-          <span class="cart-icon">🛒</span>
-        </div>
-        <h3 class="product-name">${p.name}</h3>
-        <p class="price">${p.price}đ ${p.oldPrice ? `<span class="old-price">${p.oldPrice}đ</span>` : ""}</p>
-        ${p.stock ? "" : "<span class='out-of-stock'>Hết hàng</span>"}
-      `;
+  <img src="${p.image}" alt="${p.name}">
+  <div class="product-icons">
+    <span class="heart-icon">❤️</span>
+    <span class="view-icon">👁️</span>
+    <span class="cart-icon">🛒</span>
+  </div>
+  <h3 class="product-name">${p.name}</h3>
+  <p class="price">${p.price}đ ${p.oldPrice ? `<span class="old-price">${p.oldPrice}đ</span>` : ""}</p>
+  ${p.stock ? "" : "<span class='out-of-stock'>Hết hàng</span>"}
+`;
+
       productContainer.appendChild(productEl);
+
+// --------- STAR RATING (thay thế block cũ) ----------
+let ratings = JSON.parse(localStorage.getItem("ratings")) || {};
+const currentRating = ratings[p.id] || 0;
+
+// Tạo badge (số sao) ở góc
+const starWrapper = document.createElement("div");
+starWrapper.className = "star-rating-wrapper";
+starWrapper.innerHTML = `<span class="badge-star">★</span><span class="badge-text">${currentRating}/5</span>`;
+productEl.appendChild(starWrapper);
+
+// Tạo popup, nhưng KHÔNG set style.display gì lúc tạo
+const starPopup = document.createElement("div");
+starPopup.className = "star-popup";
+for (let i = 1; i <= 5; i++) {
+  const s = document.createElement("span");
+  s.className = "star";
+  s.innerText = "★";
+  s.dataset.value = i;
+  if (i <= currentRating) s.classList.add("selected");
+  starPopup.appendChild(s);
+}
+
+
+
+// Hỗ trợ hiển thị popup: hover badge OR click badge (tốt cho touch)
+let hideTimeout = null;
+let popupAppended = false;
+
+function showPopup() {
+  if (!popupAppended) {
+    productEl.appendChild(starPopup);
+    popupAppended = true;
+  }
+  clearTimeout(hideTimeout);
+  starPopup.style.display = "flex";
+  starWrapper.classList.add("open");
+}
+
+function hidePopupDelayed() {
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(() => {
+    if (!starWrapper.matches(':hover') && !starPopup.matches(':hover')) {
+      starPopup.style.display = "none";
+      starWrapper.classList.remove("open");
+    }
+  }, 150);
+}
+
+starWrapper.addEventListener("mouseenter", showPopup);
+starWrapper.addEventListener("click", () => {
+  if (starPopup.style.display === "flex") {
+    starPopup.style.display = "none";
+    starWrapper.classList.remove("open");
+  } else {
+    showPopup();
+  }
+});
+starWrapper.addEventListener("mouseleave", hidePopupDelayed);
+starPopup.addEventListener("mouseenter", () => clearTimeout(hideTimeout));
+starPopup.addEventListener("mouseleave", hidePopupDelayed);
+
+
+// hover từng sao để preview (mờ -> sáng)
+/* các sao trong popup luôn có thể hover để preview, và click để set rating */
+Array.from(starPopup.children).forEach(star => {
+  star.addEventListener("mouseenter", () => {
+    const v = parseInt(star.dataset.value, 10);
+    Array.from(starPopup.children).forEach(s => {
+      s.classList.toggle("hover", parseInt(s.dataset.value, 10) <= v);
+    });
+  });
+
+  star.addEventListener("mouseleave", () => {
+    // remove hover class, giữ selected theo rating hiện tại
+    Array.from(starPopup.children).forEach(s => s.classList.remove("hover"));
+    const r = ratings[p.id] || 0;
+    Array.from(starPopup.children).forEach(s => {
+      s.classList.toggle("selected", parseInt(s.dataset.value,10) <= r);
+    });
+  });
+
+  // Click để đánh giá (luôn cho phép đánh giá lại)
+  star.addEventListener("click", () => {
+    const val = parseInt(star.dataset.value, 10);
+    ratings[p.id] = val;
+    localStorage.setItem("ratings", JSON.stringify(ratings));
+
+    // cập nhật badge
+    const badgeText = starWrapper.querySelector(".badge-text");
+    if (badgeText) badgeText.innerText = `${val}/5`;
+
+    // cập nhật class selected cho popup
+    Array.from(starPopup.children).forEach(s => {
+      s.classList.toggle("selected", parseInt(s.dataset.value,10) <= val);
+      s.classList.remove("hover");
+    });
+
+    // ẩn popup sau 200ms để người dùng có cảm giác hoàn tất
+    setTimeout(() => {
+      starPopup.style.display = "none";
+      starWrapper.classList.remove("open");
+    }, 200);
+  });
+});
+
 
   // --- Xử lý nút ❤️ Thích ---
 const heartBtn = productEl.querySelector(".heart-icon");
@@ -199,6 +307,7 @@ productEl.querySelector(".cart-icon").addEventListener("click", () => {
     });
   });
 }
+
  
 // --- Đóng modal ---
 document.querySelector("#productModal .close-btn").addEventListener("click", () => {

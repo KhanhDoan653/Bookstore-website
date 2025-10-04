@@ -732,3 +732,74 @@ header a.active {
   transform: scale(1.15);
   box-shadow: 0 0 20px rgba(0, 242, 254, 0.9);
 }
+
+/* ----- Star rating badge + popup ----- */
+.star-rating-wrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  user-select: none;
+}
+
+/* small star icon inside badge */
+.star-rating-wrapper .badge-star {
+  font-size: 14px;
+  color: #ffd54a;
+}
+
+/* popup chứa 5 sao */
+.star-popup {
+  display: none ; /* !important để override mọi inline style */
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background: #ffffff;
+  padding: 6px 8px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* mỗi ngôi sao trong popup */
+.star-popup .star {
+  font-size: 20px;
+  color: #cfcfcf; /* mờ mặc định */
+  transition: color 0.12s ease, transform 0.12s ease;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* khi hover (preview) — sáng và hơi phồng */
+.star-popup .star.hover,
+.star-popup .star.selected {
+  color: #ffcc33;
+  transform: scale(1.12);
+}
+
+/* khi popup hiện thì tăng contrast badge */
+.star-rating-wrapper.open {
+  background: rgba(0,0,0,0.85);
+}
+
+/* responsive: thu nhỏ popup trên mobile */
+@media (max-width: 420px) {
+  .star-popup { transform: scale(0.96); }
+  .star-popup .star { font-size: 18px; }
+}
