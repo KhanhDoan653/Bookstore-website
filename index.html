@@ -69,7 +69,13 @@
       <span onclick="currentSlide(3)"></span>
     </div>
   </div>
+
+
+
 </section>
+
+<div id="eventBannerContainer"></div> 
+
 <!-- Container để hiển thị sản phẩm theo chủ đề -->
 <div id="dynamicSections"></div>
 
@@ -77,8 +83,7 @@
 <div id="productList" class="products-container">
   <!-- JS sẽ thêm các thẻ .product vào đây -->
 </div>
-
-
+  
 <div id="productModal" class="modal">
   <div class="modal-content">
     <span class="close-btn">&times;</span>
@@ -123,6 +128,10 @@
   </div>
 </section>
 
+ <!-- Nút lên đầu trang -->
+<button id="scrollTopBtn" title="Lên đầu trang">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
 <script src="js/index.js"> </script>
 <!-- Footer -->
@@ -152,6 +161,103 @@
     <p>&copy; 2025 Ocean Horizon. All rights reserved.</p>
   </div>
 </footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  function loadEvents() {
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+    const now = new Date();
+    const activeEvent = events[events.length - 1]; // lấy sự kiện mới nhất
+    const container = document.getElementById("eventBannerContainer");
+    container.innerHTML = "";
+    if (events.length === 0) return;
+events.forEach(activeEvent => {
+  // tạo banner như cũ cho từng sự kiện
+});
+
+
+    const end = new Date(activeEvent.endDate).getTime();
+
+    const banner = document.createElement("div");
+banner.style = `
+  position: relative;
+  background: linear-gradient(135deg, #00f0ff, #004e92, #00ffd5, #0088cc);
+  background-size: 400% 400%;
+  color: #fff;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 14px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+  animation: oceanFlow 10s ease-in-out infinite, gradientMove 15s ease-in-out infinite;
+  overflow: hidden;
+`;
+// Thêm style cho các hình ảnh bên trong
+const imgs = banner.querySelectorAll("img");
+imgs.forEach(img => {
+  img.style = `
+    transform: scale(1.2) rotate(10deg);
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,255,255,0.5);
+  `;
+  // Khi hover phóng to hơn
+  img.addEventListener("mouseenter", () => {
+    img.style.transform = "scale(1.4) rotate(10deg)";
+  });
+  img.addEventListener("mouseleave", () => {
+    img.style.transform = "scale(1.2) rotate(10deg)";
+  });
+});
+
+// Animation background gradient
+const styleSheet = document.styleSheets[0];
+styleSheet.insertRule(`
+  @keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+`, styleSheet.cssRules.length);
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+
+    banner.innerHTML = `
+      <div>
+        <h2>${activeEvent.title}</h2>
+        <div id="countdown"></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        ${activeEvent.books.map(id => {
+          const p = products.find(x => x.id == id);
+          return p ? `<img src="${p.image}" width="80" style="border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.4);">` : "";
+        }).join("")}
+      </div>
+    `;
+
+    container.appendChild(banner);
+
+    function updateCountdown() {
+      const diff = end - Date.now();
+      if (diff <= 0) {
+        container.innerHTML = "";
+        return;
+      }
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+      document.getElementById("countdown").textContent = `Kết thúc sau: ${d} ngày ${h}h ${m}m ${s}s`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  loadEvents();
+});
+</script>
 
 </body>
 </html>

@@ -1,13 +1,27 @@
-body{
- background: linear-gradient(160deg, #001F3F 0%, #003459 50%, #005377 100%);
-background-attachment: fixed;
-
+body {
+  background: linear-gradient(180deg, #001933 0%, #003f88 40%, #001a2c 100%);
+  background-attachment: fixed;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* Reset mặc định cho link */
+header {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 30px;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1000;
+  margin: 0;
+}
+
+
 header a {
   text-decoration: none;
-  color: #ffffff;
+  color: #eaf6ff;
   font-size: 16px;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -15,29 +29,14 @@ header a {
   border-radius: 8px;
 }
 
-/* Header */
-header {
-  background: transparent; /* Ocean Horizon gradient */
-  display: flex;
-  justify-content: center;   /* căn giữa các link */
-  align-items: center;
-  gap: 20px;                 /* khoảng cách giữa các link */
-  padding: 15px 30px;
-  position: sticky;          /* bám trên cùng khi cuộn */
-  top: 0;
-  z-index: 1000;
-}
-
-/* Hiệu ứng hover */
 header a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 180, 255, 0.3);
   transform: translateY(-2px);
 }
 
-/* Link đang active (ví dụ cho Trang Chủ) */
 header a.active {
-  background-color: #ffffff;
-  color: #0B6FA4;
+  background-color: #00b4d8;
+  color: #002855;
   font-weight: 600;
 }
 
@@ -492,6 +491,7 @@ header a.active {
 }
 
 .profile-popup h3 {
+  color: rgb(0, 22, 104);
   margin: 10px 0;
 }
 
@@ -658,4 +658,77 @@ header a.active {
 
 #cart-count.bump {
   transform: scale(1.5);
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+  header a {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  .search-box input {
+    width: 100px;
+  }
+}
+@media (max-width: 480px) {
+  .search-box {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .search-box input {
+    width: 100%;
+  }
+}
+
+/* --- Nút Lên Đầu Trang --- */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0077b6; /* xanh dương biển */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  display: none; /* Mặc định ẩn */
+  z-index: 999;
+}
+
+#scrollTopBtn:hover {
+  background-color: #00b4d8;
+  transform: scale(1.1);
+}
+
+@keyframes oceanFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#eventBannerContainer h2 {
+  text-shadow: 0 0 12px #fff5, 0 0 25px #00c2ff;
+  animation: glowPulse 2.5s infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 12px #00f2fe, 0 0 25px #4facfe; }
+  50% { text-shadow: 0 0 20px #ffd60a, 0 0 40px #ffea00; }
+}
+
+#eventBannerContainer img {
+  border-radius: 10px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+#eventBannerContainer img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.9);
 }

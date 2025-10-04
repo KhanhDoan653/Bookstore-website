@@ -4,154 +4,554 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin - Ocean Horizon</title>
-<link rel="stylesheet" href="css/index.css">
 <link rel="icon" type="image/png" href="img/Ocean_Horizon_Website_Icon.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
- body {
-  font-family: Arial, sans-serif;
-  margin: 0; 
+/* ===========================
+🔥 OCEAN HORIZON ADMIN STYLE 🔥
+Theme: Cyber Deep Ocean
+=========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+body {
+  font-family: 'Orbitron', Arial, sans-serif;
+  margin: 0;
   padding: 0;
-  background: #0A192F; /* deep navy */
-  color: #E0F7FA;      /* light aqua text */
+  background: radial-gradient(circle at 20% 20%, #001d3d, #000814 80%);
+  color: #E0F7FA;
+  overflow-x: hidden;
 }
 
+/* --- HEADER --- */
 header {
-  background: linear-gradient(135deg, #001F3F, #003B6F, #005B96);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #001F3F, #003B6F, #0077B6);
   color: #E0F7FA;
-  padding: 15px 30px;
+  box-shadow: 0 0 25px rgba(0,180,216,0.6);
+  border-bottom: 2px solid rgba(0,180,216,0.4);
+  z-index: 1000;
+}
+
+header .container {
+  max-width: 1200px; /* tùy chỉnh, 1000–1300 là hợp lý */
+  margin: 0 auto;    /* căn giữa */
+  padding: 15px 50px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  justify-content: space-between;
+}
+
+
+
+@keyframes glowHeader {
+  0% { box-shadow: 0 0 15px #0077B6; }
+  100% { box-shadow: 0 0 30px #00B4D8; }
 }
 
 header h1 {
   margin: 0;
-  font-size: 26px;
-  font-weight: bold;
-  letter-spacing: 1px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px #00B4D8;
 }
 
 header a {
-  color: #90E0EF;
+  color: #CAF0F8;
   font-weight: bold;
   text-decoration: none;
-  transition: color 0.3s;
+  padding: 8px 18px;
+  border: 1px solid #00B4D8;
+  border-radius: 6px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,180,216,0.3);
 }
 header a:hover {
-  color: #00B4D8;
+  background: #00B4D8;
+  color: #001F3F;
+  box-shadow: 0 0 20px #00B4D8;
 }
 
+/* --- MAIN CONTAINER --- */
 .container {
   max-width: 1100px;
-  margin: 30px auto;
-  padding: 25px;
-  background: #112D4E;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  margin: 120px auto 40px auto;
+  padding: 35px;
+  background: rgba(17, 45, 78, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0,180,216,0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,180,216,0.3);
+  animation: fadeIn 1s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- SECTION TITLES --- */
 h2 {
-  margin: 20px 0;
   text-align: center;
   font-size: 22px;
   color: #90E0EF;
+  text-shadow: 0 0 10px #00B4D8;
+  border-bottom: 1px solid rgba(0,180,216,0.3);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
 }
 
+/* --- FORM ELEMENTS --- */
 input, select {
-  padding: 10px;
-  margin-right: 8px;
-  margin-bottom: 12px;
-  width: 220px;
-  border: none;
-  border-radius: 6px;
-  background: #0F3460;
+  padding: 12px;
+  margin: 8px;
+  width: 250px;
+  border: 1px solid rgba(0,180,216,0.5);
+  border-radius: 8px;
+  background: rgba(10, 52, 96, 0.9);
   color: #E0F7FA;
+  transition: 0.3s;
 }
 input:focus, select:focus {
-  outline: 2px solid #00B4D8;
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: 0 0 15px #00B4D8;
+  background: rgba(14, 68, 128, 1);
 }
 
+/* --- BUTTONS --- */
 button {
-  padding: 10px 16px;
-  margin-right: 5px;
-  border: none;
-  border-radius: 6px;
-  background: #0077B6;
+  padding: 12px 20px;
+  margin: 8px 5px;
+  border: 1px solid #00B4D8;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0077B6, #00B4D8);
   color: white;
   cursor: pointer;
-  transition: all 0.3s;
-  font-weight: bold;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0,180,216,0.4);
 }
 button:hover {
-  background: #00B4D8;
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, #00B4D8, #90E0EF);
+  color: #001F3F;
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px #00B4D8;
 }
 
+/* --- CATEGORY LIST --- */
 ul {
   list-style: none;
   padding: 0;
 }
-
 li {
-  margin-bottom: 8px;
+  margin: 8px 0;
+  padding: 10px 14px;
+  background: rgba(27, 58, 87, 0.9);
+  border-radius: 8px;
+  color: #E0F7FA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0,180,216,0.3);
+  transition: 0.3s;
+}
+li:hover {
+  background: rgba(30, 70, 110, 1);
+  box-shadow: 0 0 20px rgba(0,180,216,0.5);
 }
 
+/* --- PRODUCT ITEM --- */
 .admin-product {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  background: #1B3A57;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  background: rgba(18, 40, 70, 0.9);
+  margin-bottom: 15px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,180,216,0.3);
+  box-shadow: 0 0 20px rgba(0,180,216,0.3);
+  transition: 0.3s;
+}
+.admin-product:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(0,180,216,0.5);
 }
 .admin-product img {
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
-  margin-right: 12px;
-  border-radius: 6px;
+  margin-right: 15px;
+  border-radius: 8px;
   border: 2px solid #00B4D8;
+  box-shadow: 0 0 10px #00B4D8;
 }
 .product-name {
-  color: #E0F7FA !important;
+  color: #E0F7FA;
   font-weight: bold;
   flex: 1;
+  text-shadow: 0 0 6px #00B4D8;
 }
 
+/* --- MODAL --- */
 .modal {
   display: none;
   position: fixed;
   top:0; left:0;
   width:100%; height:100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(6px);
+  z-index: 2000;
 }
 .modal-content {
-  background: #112D4E;
-  padding: 25px;
-  border-radius: 10px;
+  background: rgba(17, 45, 78, 0.95);
+  padding: 30px;
+  border-radius: 12px;
   width: 420px;
   position: relative;
-  box-shadow: 0 0 15px rgba(0,180,216,0.6);
+  border: 1px solid #00B4D8;
+  box-shadow: 0 0 40px rgba(0,180,216,0.6);
+  animation: modalPop 0.4s ease;
+}
+@keyframes modalPop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 .modal-content h3 {
-  margin: 0 0 15px;
   text-align: center;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   color: #00B4D8;
+  text-shadow: 0 0 15px #00B4D8;
 }
 .close-btn {
   position: absolute;
   top: 10px;
   right: 15px;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 24px;
   color: #90E0EF;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: #00B4D8;
+  transform: rotate(90deg);
+}
+
+/* --- SCROLLBAR CUSTOM --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #001d3d;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00B4D8, #0077B6);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#00E0FF, #0096C7);
+}
+.user-menu {
+  position: absolute;
+  right: 150px;        /* tăng từ 30px → 80px cho lệch trái hơn */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  z-index: 1100;
+}
+
+
+.username {
+  color: #90E0EF;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 15px;
+  border: 1px solid rgba(0,180,216,0.5);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #002b5c, #004b8d);
+  box-shadow: 0 0 10px rgba(0,180,216,0.5);
+  transition: all 0.3s;
+
+}
+
+.username:hover {
+  background: #00B4D8;
+  color: white;
+  box-shadow: 0 0 20px #00B4D8;
+}
+
+.dropdown-user {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: #002b5c;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  overflow: hidden;
+  z-index: 999;
+  min-width: 180px; /* tăng từ 150 → 180 để không bị cắt chữ */
+}
+
+
+.dropdown-user a {
+  display: block;
+  padding: 10px 15px;
+  color: #E0F7FA;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.dropdown-user a:hover {
+  background: #00B4D8;
+  color: white;
+}
+
+.dropdown-user.show {
+  display: block;
+}
+
+/* Popup hồ sơ */
+.profile-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.profile-popup .popup-content {
+  background: radial-gradient(circle at top, #002855, #001d3d);
+  border: 2px solid #00b4d8;
+  box-shadow: 0 0 30px #00b4d8;
+  padding: 25px 35px;
+  border-radius: 15px;
+  text-align: center;
+  color: #E0F7FA;
+  animation: fadeIn 0.3s ease;
+}
+
+.profile-popup img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #00B4D8;
+  margin-bottom: 15px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Nút Lên Đầu Trang --- */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0077b6; /* xanh dương biển */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  display: none; /* Mặc định ẩn */
+  z-index: 999;
+}
+
+#scrollTopBtn:hover {
+  background-color: #00b4d8;
+  transform: scale(1.1);
+}
+
+/* =======================
+🎆 EVENT POPUP STYLE 🎆
+======================= */
+
+#eventPopup .modal-content {
+  background: rgba(17, 45, 78, 0.95); /* màu nền đồng bộ với container */
+  border: 2px solid #00B4D8;
+  box-shadow: 0 0 40px rgba(0,180,216,0.6);
+  padding: 30px;
+  border-radius: 16px;
+  width: 420px;
+  max-width: 90%;
+  position: relative;
+  animation: modalPop 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #E0F7FA;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#eventPopup h3 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #00B4D8;
+  text-shadow: 0 0 15px #00B4D8;
+  margin-bottom: 15px;
+}
+
+/* Close button */
+#eventPopup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 26px;
+  color: #90E0EF;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#eventPopup .close-btn:hover {
+  color: #00B4D8;
+  transform: rotate(90deg);
+}
+
+/* Inputs và labels */
+#eventPopup input[type="text"],
+#eventPopup input[type="date"] {
+  width: 90%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,180,216,0.5);
+  background: rgba(10,52,96,0.9);
+  color: #E0F7FA;
+  transition: 0.3s;
+}
+
+#eventPopup input::placeholder {
+  color: #b0e0f0;
+}
+
+#eventPopup input:focus {
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: 0 0 15px #00B4D8;
+  background: rgba(14,68,128,1);
+}
+
+#eventPopup label {
+  font-weight: 500;
+  color: #90E0EF;
+  margin-top: 8px;
+}
+
+/* Book select list */
+#eventPopup #bookSelectList {
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(10,52,96,0.6);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,180,216,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Scrollbar cho danh sách sách */
+#eventPopup #bookSelectList::-webkit-scrollbar {
+  width: 10px;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-track {
+  background: #001d3d;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00B4D8, #0077B6);
+  border-radius: 5px;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#00E0FF, #0096C7);
+}
+
+/* Checkbox + img + label - SỬA ĐỂ THẲNG HÀNG */
+#eventPopup #bookSelectList label {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Đảm bảo label chiếm hết chiều rộng */
+  padding: 8px 12px; /* Tăng padding để đều hơn */
+  border-radius: 6px;
+  transition: background 0.2s;
+  box-sizing: border-box; /* Để padding không làm lệch kích thước */
+}
+
+#eventPopup #bookSelectList label:hover {
+  background: rgba(0,180,216,0.2);
+}
+
+/* Checkbox: Cố định vị trí và kích thước */
+#eventPopup #bookSelectList input[type="checkbox"] {
+  flex-shrink: 0; /* Không co lại */
+  margin-right: 10px; /* Khoảng cách cố định */
+  width: 16px; /* Kích thước checkbox cố định */
+  height: 16px;
+  accent-color: #00B4D8; /* Màu checkbox khi checked */
+}
+
+/* Img: Cố định vị trí và kích thước */
+#eventPopup #bookSelectList img {
+  flex-shrink: 0; /* Không co lại */
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px; /* Khoảng cách cố định */
+  object-fit: cover; /* Để ảnh không bị méo */
+}
+
+/* Span (tên sách): Linh hoạt nhưng giới hạn để tránh lệch hàng */
+#eventPopup #bookSelectList span {
+  flex: 1; /* Chiếm hết không gian còn lại */
+  white-space: nowrap; /* Không xuống dòng */
+  overflow: hidden; /* Ẩn phần thừa */
+  text-overflow: ellipsis; /* Thêm dấu ... nếu quá dài */
+  font-size: 14px; /* Kích thước chữ nhỏ hơn để vừa */
+}
+
+/* Nút lưu sự kiện */
+#eventPopup button#saveEventBtn {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #00B4D8;
+  background: linear-gradient(135deg, #0077B6, #00B4D8);
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0,180,216,0.4);
+  margin-top: 10px;
+}
+
+#eventPopup button#saveEventBtn:hover {
+  background: linear-gradient(135deg, #00B4D8, #90E0EF);
+  color: #001F3F;
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px #00B4D8;
 }
 
 </style>
@@ -160,9 +560,12 @@ li {
 <script src="js/admin.js" defer></script>
 
 <header>
-  <h1>Quản Lý Ocean Horizon</h1>
-       <a href="login.html" id="loginLink">Đăng nhập</a>
+  <div class="container">
+    <h1>QUẢN LÝ CỬA HÀNG</h1>
+    <a href="login.html" id="loginLink">Đăng nhập</a>
+  </div>
 </header>
+
 
 <div class="container">
 
@@ -174,6 +577,13 @@ li {
     <ul id="categoryList"></ul>
   </section>
 
+<!-- Quản lý sự kiện -->
+<section id="eventManager">
+  <h2>Quản Lý Sự Kiện</h2>
+  <button id="addEventBtn">Thêm Sự Kiện</button>
+  <div id="eventList"></div>
+</section>
+
   <!-- Quản lý sản phẩm -->
   <section id="productManager">
     <h2>Quản Lý Sản Phẩm</h2>
@@ -182,6 +592,10 @@ li {
   </section>
 
 </div>
+  <!-- Nút lên đầu trang -->
+<button id="scrollTopBtn" title="Lên đầu trang">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
 <!-- Popup Thêm/Sửa sản phẩm -->
 <div id="productPopup" class="modal">
@@ -196,6 +610,25 @@ li {
     <input type="text" id="productYear" placeholder="Năm xuất bản">
     <input type="file" id="productImage" accept="image/*">
     <button id="saveProductBtn">Lưu</button>
+  </div>
+
+
+
+</div>
+
+  <!-- Popup Thêm/Sửa Sự Kiện -->
+<div id="eventPopup" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeEventPopup">&times;</span>
+    <h3 id="eventPopupTitle">Thêm Sự Kiện</h3>
+    <input type="text" id="eventTitle" placeholder="Tên sự kiện">
+    <label>Bắt đầu:</label>
+    <input type="date" id="eventStartDate">
+    <label>Kết thúc:</label>
+    <input type="date" id="eventEndDate">
+    <label>Chọn sách trưng bày:</label>
+    <div id="bookSelectList" style="max-height:150px; overflow:auto; background:rgba(10,52,96,0.5); padding:10px; border-radius:8px;"></div>
+    <button id="saveEventBtn">Lưu Sự Kiện</button>
   </div>
 </div>
 <script>
@@ -377,6 +810,113 @@ function toggleStock(cat,i){
   localStorage.setItem("sections", JSON.stringify(sections));
   renderAdminProducts();
 }
+
+
+let events = JSON.parse(localStorage.getItem("events")) || [];
+let eventEditIndex = null;
+
+// === Mở popup thêm sự kiện ===
+const eventPopup = document.getElementById("eventPopup");
+const openEventPopupBtn = document.getElementById("addEventBtn");
+const closeEventPopupBtn = document.getElementById("closeEventPopup");
+const saveEventBtn = document.getElementById("saveEventBtn");
+
+openEventPopupBtn.addEventListener("click", () => {
+  eventEditIndex = null;
+  document.getElementById("eventPopupTitle").innerText = "Thêm Sự Kiện";
+  document.getElementById("eventTitle").value = "";
+  document.getElementById("eventStartDate").value = "";
+  document.getElementById("eventEndDate").value = "";
+  renderBookSelectList();
+  eventPopup.style.display = "flex";
+});
+
+closeEventPopupBtn.addEventListener("click", () => {
+  eventPopup.style.display = "none";
+});
+
+// === Hiển thị danh sách sách có thể chọn ===
+function renderBookSelectList(selected = []) {
+  const list = document.getElementById("bookSelectList");
+  list.innerHTML = products.map(p => `
+    <label>
+      <input type="checkbox" value="${p.id}" ${selected.includes(p.id) ? "checked" : ""}>
+      <img src="${p.image}" alt="${p.name}">
+      <span>${p.name}</span>
+    </label>
+  `).join("");
+}
+
+// === Lưu hoặc cập nhật sự kiện ===
+saveEventBtn.addEventListener("click", () => {
+  const title = document.getElementById("eventTitle").value.trim();
+  const startDate = document.getElementById("eventStartDate").value;
+  const endDate = document.getElementById("eventEndDate").value;
+  const selectedBooks = [...document.querySelectorAll("#bookSelectList input:checked")].map(i => i.value);
+
+  if (!title || !startDate || !endDate) return alert("⚠️ Vui lòng nhập đầy đủ thông tin!");
+  if (new Date(startDate) > new Date(endDate)) return alert("⚠️ Ngày bắt đầu không thể sau ngày kết thúc!");
+  if (selectedBooks.length === 0) return alert("⚠️ Hãy chọn ít nhất 1 cuốn sách!");
+
+  const newEvent = {
+    id: eventEditIndex !== null ? events[eventEditIndex].id : Date.now(),
+    title,
+    startDate,
+    endDate,
+    books: selectedBooks
+  };
+
+  if (eventEditIndex !== null) events[eventEditIndex] = newEvent;
+  else events.push(newEvent);
+
+  localStorage.setItem("events", JSON.stringify(events));
+  renderEventList();
+  eventPopup.style.display = "none";
+});
+
+// === Hiển thị danh sách sự kiện ===
+function renderEventList() {
+  const container = document.getElementById("eventList");
+  if (events.length === 0) {
+    container.innerHTML = "<p>Chưa có sự kiện nào.</p>";
+    return;
+  }
+
+  container.innerHTML = events.map((e, i) => `
+    <div class="admin-product">
+      <span class="product-name">${e.title}</span>
+      <span>Từ: ${e.startDate} - Đến: ${e.endDate}</span>
+      <div>
+        <button onclick="editEvent(${i})">Sửa</button>
+        <button onclick="deleteEvent(${i})">Xóa</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+// === Sửa sự kiện ===
+function editEvent(i) {
+  const e = events[i];
+  eventEditIndex = i;
+  document.getElementById("eventPopupTitle").innerText = "Sửa Sự Kiện";
+  document.getElementById("eventTitle").value = e.title;
+  document.getElementById("eventStartDate").value = e.startDate;
+  document.getElementById("eventEndDate").value = e.endDate;
+  renderBookSelectList(e.books);
+  eventPopup.style.display = "flex";
+}
+
+// === Xóa sự kiện ===
+function deleteEvent(i) {
+  if (confirm("❌ Bạn có chắc muốn xóa sự kiện này không?")) {
+    events.splice(i, 1);
+    localStorage.setItem("events", JSON.stringify(events));
+    renderEventList();
+  }
+}
+
+// === Gọi render ban đầu ===
+renderEventList();
 
 // Khởi tạo
 renderCategoryList();

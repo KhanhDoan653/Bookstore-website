@@ -46,7 +46,7 @@ if (!loginLink) return;
       <span class="username"> ${user.name}</span>
       <div class="dropdown-user">
         <a href="#" id="profileBtn">Hồ sơ</a>
-        <a href="#" id="logoutBtn">Đăng xuất</a>
+        <a href="login.html" id="logoutBtn">Đăng xuất</a>
       </div>
     `;
 
@@ -231,3 +231,21 @@ function searchProducts() {
     }
   });
 }
+
+// --- Nút Lên Đầu Trang ---
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+window.onscroll = function() {
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    scrollTopBtn.style.display = "block";
+  } else {
+    scrollTopBtn.style.display = "none";
+  }
+};
+
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
