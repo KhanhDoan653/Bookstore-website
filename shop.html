@@ -90,6 +90,17 @@
 
 
  <script>
+  function removeVietnameseTones(str) {
+    if (!str) return "";
+    return str.normalize("NFD")                   // tách ký tự dấu ra
+              .replace(/[\u0300-\u036f]/g, "")   // loại bỏ các dấu
+              .replace(/đ/g, "d").replace(/Đ/g, "D"); // thay đ/Đ
+}
+
+// Ví dụ:
+const text = "Hóa Đơn OCEAN HORIZON";
+console.log(removeVietnameseTones(text)); // Hoa Don OCEAN HORIZON
+
 /* Helper: parse price string -> integer (đồng) */
 function parsePrice(val) {
   if (val == null) return 0;
@@ -231,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Tiêu đề
     doc.setFontSize(18);
-    doc.text("HÓA ĐƠN OCEAN HORIZON", 14, y);
+    doc.text("HOA ĐON OCEAN HORIZON", 14, y);
     y += 10;
 
     doc.setFontSize(12);
@@ -253,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Tổng cộng
     y += 10;
     doc.setFontSize(14);
-    doc.text(`Tổng: ${formatPrice(total)}`, 14, y);
+    doc.text(`Tong Tien: ${formatPrice(total)}`, 14, y);
 
     // Lưu file PDF
     doc.save("hoa_don_OceanHorizon.pdf");
