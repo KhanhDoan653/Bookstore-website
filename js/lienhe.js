@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("contactForm");
 
@@ -16,33 +15,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = phoneInput.value.trim();
     const message = messageInput.value.trim();
 
-    // Regex email
+    // Reset trạng thái lỗi
+    [nameInput, emailInput, phoneInput, messageInput].forEach(input => {
+      input.style.borderColor = "";
+      const err = input.nextElementSibling;
+      if (err && err.classList.contains("error-msg")) err.remove();
+    });
+
+    // Regex
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const namePattern = /^[a-zA-ZÀ-ỹ\s]{2,}$/; // chỉ chữ và khoảng trắng, ít nhất 2 ký tự
+    const phonePattern = /^[0-9]{7,15}$/; // chỉ số, dài từ 7-15 ký tự
 
     // Validate
-    if (name === "") {
-      alert("Vui lòng nhập họ tên của bạn.");
-      nameInput.focus();
-      return;
+    let valid = true;
+
+    function showError(input, msg) {
+      input.style.borderColor = "red";
+      const err = document.createElement("div");
+      err.className = "error-msg";
+      err.style.color = "red";
+      err.style.fontSize = "12px";
+      err.style.marginTop = "4px";
+      err.innerText = msg;
+      input.after(err);
+      input.focus();
+      valid = false;
+    }
+
+    if (!namePattern.test(name)) {
+      showError(nameInput, "Vui lòng nhập họ tên hợp lệ (chỉ chữ và khoảng trắng).");
     }
 
     if (!emailPattern.test(email)) {
-      alert("Vui lòng nhập email hợp lệ.");
-      emailInput.focus();
-      return;
+      showError(emailInput, "Vui lòng nhập email hợp lệ.");
     }
 
-    if (phone === "") {
-      alert("Vui lòng nhập số điện thoại.");
-      phoneInput.focus();
-      return;
+    if (!phonePattern.test(phone)) {
+      showError(phoneInput, "Vui lòng nhập số điện thoại hợp lệ (7-15 chữ số).");
     }
 
-    if (message === "") {
-      alert("Vui lòng nhập nội dung lời nhắn.");
-      messageInput.focus();
-      return;
+    if (message.length < 10) {
+      showError(messageInput, "Nội dung tin nhắn tối thiểu 10 ký tự.");
     }
+
+    if (!valid) return; // nếu có lỗi thì dừng gửi
 
     // Gửi dữ liệu qua Formspree
     try {
