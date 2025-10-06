@@ -96,31 +96,40 @@ if (!loginLink) return;
 
 function renderSections() {
   const container = document.getElementById("dynamicSections");
-  container.innerHTML = "";
+container.innerHTML = "";
 
-  const sections = JSON.parse(localStorage.getItem("sections")) || {};
+const sections = JSON.parse(localStorage.getItem("sections")) || {};
+const eventsObj = JSON.parse(localStorage.getItem("events")) || {};
+const events = Object.values(eventsObj); // chuyển object thành mảng
 
-  Object.keys(sections).forEach(sectionName => {
-    const sectionEl = document.createElement("section");
-    sectionEl.className = "product-section";
+// Lấy danh sách sách đang trong sự kiện active
+const featuredBookIds = getFeaturedBookIds(events);
 
-    const safeId = "section-" + sectionName.replace(/\s+/g, '-');
+Object.keys(sections).forEach(sectionName => {
+  const sectionEl = document.createElement("section");
+  sectionEl.className = "product-section";
 
-    sectionEl.innerHTML = `
-      <h3>${sectionName}</h3>
-      <div class="products-container" id="${safeId}"></div>
-    `;
+  const safeId = "section-" + sectionName.replace(/\s+/g, '-');
 
-    container.appendChild(sectionEl);
+  sectionEl.innerHTML = `
+    <h3>${sectionName}</h3>
+    <div class="products-container" id="${safeId}"></div>
+  `;
 
-    const productContainer = sectionEl.querySelector(`#${safeId}`);
+  container.appendChild(sectionEl);
 
-    sections[sectionName].forEach(p => {
-      const productEl = document.createElement("div");
-      productEl.className = "product";
-       productEl.style.position = "relative";
-      productEl.style.opacity = p.stock ? "1" : "0.5";
-      productEl.innerHTML = `
+  const productContainer = sectionEl.querySelector(`#${safeId}`);
+
+  sections[sectionName].forEach(p => {
+    const isFeatured = featuredBookIds.includes(p.id);
+    const productEl = document.createElement("div");
+    productEl.className = `product ${isFeatured ? 'book-on-fire' : ''}`;
+    productEl.style.position = "relative";
+    productEl.style.opacity = p.stock ? "1" : "0.5";
+    
+   productEl.innerHTML = `
+  ${isFeatured ? createFireEffect() : ''}
+  ${isFeatured ? '<div class="featured-badge">🔥 SÁCH SỰ KIỆN</div>' : ''}
   <img src="${p.image}" alt="${p.name}">
   <div class="product-icons">
     <span class="heart-icon">❤️</span>
@@ -132,7 +141,7 @@ function renderSections() {
   ${p.stock ? "" : "<span class='out-of-stock'>Hết hàng</span>"}
 `;
 
-      productContainer.appendChild(productEl);
+    productContainer.appendChild(productEl);
 
 // --------- STAR RATING (thay thế block cũ) ----------
 let ratings = JSON.parse(localStorage.getItem("ratings")) || {};
@@ -290,25 +299,34 @@ window.addEventListener("click", (e) => {
 
 
       // --- Xử lý nút 🛒 Giỏ hàng ---
-   // --- Xử lý nút 🛒 Giỏ hàng ---
-productEl.querySelector(".cart-icon").addEventListener("click", () => {
+  productEl.querySelector(".cart-icon").addEventListener("click", () => {
+  // Lấy rating hiện tại
+  let ratings = JSON.parse(localStorage.getItem("ratings")) || {};
+  const currentRating = ratings[p.id] || 0;
+
+  // Nếu rating = 1, hiển thị popup cảnh báo
+  if (currentRating === 1) {
+    const confirmAdd = confirm(`Chú ý: Sản phẩm "${p.name}" chỉ được đánh giá 1/5 sao.\nBạn có chắc muốn thêm vào giỏ hàng không?`);
+    if (!confirmAdd) return; // người dùng hủy, không thêm
+  }
+
+  // Thêm vào giỏ hàng bình thường
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const idx = cart.findIndex(item => item.id === p.id);
 
   if (idx >= 0) {
     cart[idx].quantity += 1;
   } else {
-    cart.push({ id: p.id, quantity: 1 }); // chỉ lưu id + số lượng
+    cart.push({ id: p.id, quantity: 1 }); 
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
   alert(`Đã thêm "${p.name}" vào giỏ hàng!`);
   updateCartCount();
 });
-    });
   });
 }
-
+  )}
  
 // --- Đóng modal ---
 document.querySelector("#productModal .close-btn").addEventListener("click", () => {
@@ -359,3 +377,28 @@ scrollTopBtn.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+
+// Thêm các hàm này vào file
+function getFeaturedBookIds(events) {
+  const now = new Date();
+  const featuredIds = [];
+  
+  events.forEach(event => {
+    const start = new Date(event.startDate);
+    const end = new Date(event.endDate);
+    
+    if (now >= start && now <= end) {
+      featuredIds.push(...event.books);
+    }
+  });
+  
+  return featuredIds;
+}
+
+function createFireEffect() {
+  let particles = '';
+  for (let i = 0; i < 8; i++) {
+    particles += `<div class="fire-particle" style="left: ${Math.random() * 100}%; animation-delay: ${Math.random() * 1.5}s;"></div>`;
+  }
+  return `<div class="fire-particles">${particles}</div>`;
+}

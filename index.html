@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<div id="loading">
+  <div class="water-spinner"></div>
+</div>
+
       <div class="bubbles">
     <span></span>
     <span></span>
@@ -169,75 +173,98 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   function loadEvents() {
-    const events = JSON.parse(localStorage.getItem("events")) || [];
-    const products = JSON.parse(localStorage.getItem("products")) || [];
-    const container = document.getElementById("eventBannerContainer");
+  const events = JSON.parse(localStorage.getItem("events")) || [];
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const container = document.getElementById("eventBannerContainer");
+
+  container.innerHTML = "";
+  if (events.length === 0) return;
+
+  // Thêm CSS
+  addCustomStyles();
+
+  // --- Đây là chỗ bạn đặt đoạn code ---
+  events.forEach(activeEvent => {
+    const end = new Date(activeEvent.endDate).getTime();
+    const now = Date.now();
     
-    container.innerHTML = "";
-    if (events.length === 0) return;
+    if (end <= now) return;
 
-    // Thêm CSS custom
-    addCustomStyles();
+    const banner = document.createElement("div");
+    banner.className = "event-banner premium-banner";
+    
+    const waveEffect = document.createElement("div");
+    waveEffect.className = "wave-effect";
+    waveEffect.innerHTML = `
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    `;
 
-    events.forEach(activeEvent => {
-      const end = new Date(activeEvent.endDate).getTime();
-      const now = Date.now();
-      
-      if (end <= now) return;
-
-      const banner = document.createElement("div");
-      banner.className = "event-banner premium-banner";
-      
-      const waveEffect = document.createElement("div");
-      waveEffect.className = "wave-effect";
-      waveEffect.innerHTML = `
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-      `;
-
-      banner.innerHTML = `
-        <div class="banner-content">
-          <div class="event-info">
-            <div class="event-badge">SỰ KIỆN ĐẶC BIỆT</div>
-            <h2 class="event-title">${activeEvent.title}</h2>
-            <p class="event-description">Ưu đãi độc quyền - Đừng bỏ lỡ!</p>
-            <div id="countdown-${activeEvent.id}" class="countdown-timer"></div>
-            <button class="cta-button">Tham gia ngay</button>
-          </div>
-          
-          <div class="products-showcase">
-            <div class="book-carousel">
-              ${activeEvent.books.map(id => {
-                const product = products.find(p => p.id == id);
-                if (!product) return "";
-                
-                return `
-                  <div class="book-item" data-product-id="${product.id}">
-                    <div class="book-cover">
-                      <img src="${product.image}" alt="${product.name}" class="book-image">
-                      <div class="book-glow"></div>
-                    </div>
-                    <div class="book-info">
-                      <h4>${product.name}</h4>
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-          </div>
+    banner.innerHTML = `
+      <div class="banner-content">
+        <div class="event-info">
+          <div class="event-badge">SỰ KIỆN ĐẶC BIỆT</div>
+          <h2 class="event-title">${activeEvent.title}</h2>
+          <p class="event-description">Ưu đãi độc quyền - Đừng bỏ lỡ!</p>
+          <div id="countdown-${activeEvent.id}" class="countdown-timer"></div>
+          <button class="cta-button">Tham gia ngay</button>
         </div>
         
-        <div class="floating-elements">
-          <div class="floating-icon">📚</div>
-          <div class="floating-icon">🔥</div>
-          <div class="floating-icon">⭐</div>
-          <div class="floating-icon">🎁</div>
-        </div>
-      `;
+    <div class="products-showcase">
+  <div class="carousel-wrapper">
+    <button class="carousel-btn left-btn">❮</button>
+    <div class="book-carousel">
+      ${activeEvent.books.map(id => {
+        const product = products.find(p => p.id == id);
+        if (!product) return "";
+        
+        return `
+          <div class="book-item" data-product-id="${product.id}">
+            <div class="book-cover">
+              <img src="${product.image}" alt="${product.name}" class="book-image">
+              <div class="book-glow"></div>
+            </div>
+            <div class="book-info">
+              <h4>${product.name}</h4>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+    <button class="carousel-btn right-btn">❯</button>
+  </div>
+</div>
 
-      banner.appendChild(waveEffect);
-      container.appendChild(banner);
+
+        </div>
+      </div>
+      
+      <div class="floating-elements">
+        <div class="floating-icon">📚</div>
+        <div class="floating-icon">🔥</div>
+        <div class="floating-icon">⭐</div>
+        <div class="floating-icon">🎁</div>
+      </div>
+    `;
+
+    banner.appendChild(waveEffect);
+    container.appendChild(banner);
+
+  const carousel = banner.querySelector(".book-carousel");
+const leftBtn = banner.querySelector(".left-btn");
+const rightBtn = banner.querySelector(".right-btn");
+
+const scrollAmount = 160; // width sách + gap
+
+leftBtn.addEventListener("click", () => {
+  carousel.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+});
+
+rightBtn.addEventListener("click", () => {
+  carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
+});
+
 
       // Các phần countdown và interactivity giữ nguyên...
       function updateCountdown() {
@@ -280,23 +307,31 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      banner.querySelectorAll('.book-item').forEach(item => {
-        item.addEventListener('click', function() {
-          const productId = this.dataset.productId;
-          window.location.href = `product-detail.html?id=${productId}`;
-        });
-      });
+ // Chạy ngay sau khi banner được thêm vào DOM
+banner.querySelectorAll('.book-item').forEach(item => {
+  const cover = item.querySelector('.book-cover');
 
-      const ctaButton = banner.querySelector('.cta-button');
-      ctaButton.addEventListener('click', () => {
-        ctaButton.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          ctaButton.style.transform = 'scale(1)';
-        }, 150);
-        document.querySelector('.products-section')?.scrollIntoView({ 
-          behavior: 'smooth' 
-        });
-      });
+  item.addEventListener('mousemove', e => {
+    const rect = item.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const deltaX = (x - centerX) / centerX;
+    const deltaY = (y - centerY) / centerY;
+
+    const rotateX = deltaY * 15;
+    const rotateY = deltaX * 15;
+
+    cover.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  });
+
+  item.addEventListener('mouseleave', () => {
+    cover.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+  });
+});
+
     });
   }
 
@@ -588,6 +623,53 @@ document.addEventListener("DOMContentLoaded", () => {
           font-size: 1.5em;
         }
       }
+.book-item {
+  flex: 0 0 auto;
+  width: 140px;
+  cursor: pointer;
+  perspective: 1000px; /* Cho 3D */
+}
+
+.book-cover {
+  position: relative;
+  border-radius: 12px;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+  .carousel-wrapper {
+  position: relative;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 1.8em;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.left-btn {
+  left: 0;
+}
+
+.right-btn {
+  right: 0;
+}
+
+
     `;
 
     const styleSheet = document.createElement('style');
@@ -595,8 +677,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.head.appendChild(styleSheet);
   }
 
+
   loadEvents();
+
+
+
 });
+
+
+window.addEventListener("load", () => {
+  document.getElementById("loading").classList.add("hidden");
+});
+
+
+
 </script>
 
 </body>

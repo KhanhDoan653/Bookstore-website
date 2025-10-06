@@ -37,3 +37,97 @@
 .benefits-table tr:nth-child(even) {
   background: rgba(255, 255, 255, 0.1); /* hàng chẵn nền nhạt mờ */
 }
+
+.feedback-circle {
+  text-align: center;
+  padding: 100px 20px;
+  background: radial-gradient(circle at center, #002b55, #001a33);
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.feedback-circle h2 {
+  font-size: 2rem;
+  margin-bottom: 50px;
+  color: #a8e4ff;
+  letter-spacing: 2px;
+}
+
+
+.staff-feedback {
+  background: linear-gradient(135deg, #003366 0%, #001a33 100%);
+  color: #fff;
+  text-align: center;
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.staff-feedback h2 {
+  font-size: 2rem;
+  margin-bottom: 60px;
+  color: #a8e4ff;
+  letter-spacing: 2px;
+}.staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: flex-start;
+  width: 80%;
+  margin: 0 auto;
+  border-left: 3px solid #00b4d8;
+  padding-left: 50px;
+}
+
+.staff-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px 25px;
+  gap: 20px;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.staff-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #00b4d8;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.staff-info {
+  flex: 1;
+  text-align: left;
+}
+
+.feedback-box {
+  flex: 2;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid #00b4d8;
+  border-radius: 10px;
+  padding: 15px 20px;
+  color: #e6faff;
+  font-style: italic;
+  font-size: 1rem;
+  box-shadow: 0 0 15px rgba(0,180,216,0.2);
+  transition: 0.3s;
+}
+
+.staff-item:hover .feedback-box {
+  background: rgba(0, 180, 216, 0.15);
+  box-shadow: 0 0 25px rgba(0,180,216,0.4);
+}
+
+.staff-item.active img {
+  transform: scale(1.1);
+  border-color: #fff;
+}
+
+.staff-item.active .staff-info {
+  color: #00e0ff;
+}
