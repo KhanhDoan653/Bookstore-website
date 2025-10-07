@@ -1,0 +1,701 @@
+/* ===========================
+🔥 OCEAN HORIZON ADMIN STYLE 🔥
+Theme: Cyber Deep Ocean
+=========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+body {
+  font-family: 'Orbitron', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at 20% 20%, #001d3d, #000814 80%);
+  color: #E0F7FA;
+  overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #001F3F, #003B6F, #0077B6);
+  color: #E0F7FA;
+  box-shadow: 0 0 25px rgba(0,180,216,0.6);
+  border-bottom: 2px solid rgba(0,180,216,0.4);
+  z-index: 1000;
+}
+
+header .container {
+  max-width: 1200px; /* tùy chỉnh, 1000–1300 là hợp lý */
+  margin: 0 auto;    /* căn giữa */
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+@keyframes glowHeader {
+  0% { box-shadow: 0 0 15px #0077B6; }
+  100% { box-shadow: 0 0 30px #00B4D8; }
+}
+
+header h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px #00B4D8;
+}
+
+header a {
+  color: #CAF0F8;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 1px solid #00B4D8;
+  border-radius: 6px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,180,216,0.3);
+}
+header a:hover {
+  background: #00B4D8;
+  color: #001F3F;
+  box-shadow: 0 0 20px #00B4D8;
+}
+
+/* --- MAIN CONTAINER --- */
+.container {
+  max-width: 1100px;
+  margin: 120px auto 40px auto;
+  padding: 35px;
+  background: rgba(17, 45, 78, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0,180,216,0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,180,216,0.3);
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- SECTION TITLES --- */
+h2 {
+  text-align: center;
+  font-size: 22px;
+  color: #90E0EF;
+  text-shadow: 0 0 10px #00B4D8;
+  border-bottom: 1px solid rgba(0,180,216,0.3);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+}
+
+/* --- FORM ELEMENTS --- */
+input, select {
+  padding: 12px;
+  margin: 8px;
+  width: 250px;
+  border: 1px solid rgba(0,180,216,0.5);
+  border-radius: 8px;
+  background: rgba(10, 52, 96, 0.9);
+  color: #E0F7FA;
+  transition: 0.3s;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: 0 0 15px #00B4D8;
+  background: rgba(14, 68, 128, 1);
+}
+
+/* --- BUTTONS --- */
+button {
+  padding: 12px 20px;
+  margin: 8px 5px;
+  border: 1px solid #00B4D8;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0077B6, #00B4D8);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0,180,216,0.4);
+}
+button:hover {
+  background: linear-gradient(135deg, #00B4D8, #90E0EF);
+  color: #001F3F;
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px #00B4D8;
+}
+
+/* --- CATEGORY LIST --- */
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  margin: 8px 0;
+  padding: 10px 14px;
+  background: rgba(27, 58, 87, 0.9);
+  border-radius: 8px;
+  color: #E0F7FA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0,180,216,0.3);
+  transition: 0.3s;
+}
+li:hover {
+  background: rgba(30, 70, 110, 1);
+  box-shadow: 0 0 20px rgba(0,180,216,0.5);
+}
+
+/* --- PRODUCT ITEM --- */
+.admin-product {
+  display: flex;
+  align-items: center;
+  background: rgba(18, 40, 70, 0.9);
+  margin-bottom: 15px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,180,216,0.3);
+  box-shadow: 0 0 20px rgba(0,180,216,0.3);
+  transition: 0.3s;
+}
+.admin-product:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(0,180,216,0.5);
+}
+.admin-product img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 8px;
+  border: 2px solid #00B4D8;
+  box-shadow: 0 0 10px #00B4D8;
+}
+.product-name {
+  color: #E0F7FA;
+  font-weight: bold;
+  flex: 1;
+  text-shadow: 0 0 6px #00B4D8;
+}
+
+/* --- MODAL --- */
+.modal {
+  display: none;
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+}
+.modal-content {
+  background: rgba(17, 45, 78, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  width: 420px;
+  position: relative;
+  border: 1px solid #00B4D8;
+  box-shadow: 0 0 40px rgba(0,180,216,0.6);
+  animation: modalPop 0.4s ease;
+}
+@keyframes modalPop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-content h3 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  color: #00B4D8;
+  text-shadow: 0 0 15px #00B4D8;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #90E0EF;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: #00B4D8;
+  transform: rotate(90deg);
+}
+
+/* --- SCROLLBAR CUSTOM --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #001d3d;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00B4D8, #0077B6);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#00E0FF, #0096C7);
+}
+.user-menu {
+  position: absolute;
+  right: 150px;        /* tăng từ 30px → 80px cho lệch trái hơn */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  z-index: 1100;
+}
+
+
+.username {
+  color: #90E0EF;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 15px;
+  border: 1px solid rgba(0,180,216,0.5);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #002b5c, #004b8d);
+  box-shadow: 0 0 10px rgba(0,180,216,0.5);
+  transition: all 0.3s;
+
+}
+
+.username:hover {
+  background: #00B4D8;
+  color: white;
+  box-shadow: 0 0 20px #00B4D8;
+}
+
+.dropdown-user {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: #002b5c;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  overflow: hidden;
+  z-index: 999;
+  min-width: 180px; /* tăng từ 150 → 180 để không bị cắt chữ */
+}
+
+
+.dropdown-user a {
+  display: block;
+  padding: 10px 15px;
+  color: #E0F7FA;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.dropdown-user a:hover {
+  background: #00B4D8;
+  color: white;
+}
+
+.dropdown-user.show {
+  display: block;
+}
+
+/* Popup hồ sơ */
+.profile-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.profile-popup .popup-content {
+  background: radial-gradient(circle at top, #002855, #001d3d);
+  border: 2px solid #00b4d8;
+  box-shadow: 0 0 30px #00b4d8;
+  padding: 25px 35px;
+  border-radius: 15px;
+  text-align: center;
+  color: #E0F7FA;
+  animation: fadeIn 0.3s ease;
+}
+
+.profile-popup img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #00B4D8;
+  margin-bottom: 15px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+/* =======================
+🎆 EVENT POPUP STYLE 🎆
+======================= */
+
+#eventPopup .modal-content {
+  background: rgba(17, 45, 78, 0.95); /* màu nền đồng bộ với container */
+  border: 2px solid #00B4D8;
+  box-shadow: 0 0 40px rgba(0,180,216,0.6);
+  padding: 30px;
+  border-radius: 16px;
+  width: 420px;
+  max-width: 90%;
+  position: relative;
+  animation: modalPop 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #E0F7FA;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#eventPopup h3 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #00B4D8;
+  text-shadow: 0 0 15px #00B4D8;
+  margin-bottom: 15px;
+}
+
+/* Close button */
+#eventPopup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 26px;
+  color: #90E0EF;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#eventPopup .close-btn:hover {
+  color: #00B4D8;
+  transform: rotate(90deg);
+}
+
+/* Inputs và labels */
+#eventPopup input[type="text"],
+#eventPopup input[type="date"] {
+  width: 90%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,180,216,0.5);
+  background: rgba(10,52,96,0.9);
+  color: #E0F7FA;
+  transition: 0.3s;
+}
+
+#eventPopup input::placeholder {
+  color: #b0e0f0;
+}
+
+#eventPopup input:focus {
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: 0 0 15px #00B4D8;
+  background: rgba(14,68,128,1);
+}
+
+#eventPopup label {
+  font-weight: 500;
+  color: #90E0EF;
+  margin-top: 8px;
+}
+
+/* Book select list */
+#eventPopup #bookSelectList {
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(10,52,96,0.6);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,180,216,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Scrollbar cho danh sách sách */
+#eventPopup #bookSelectList::-webkit-scrollbar {
+  width: 10px;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-track {
+  background: #001d3d;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00B4D8, #0077B6);
+  border-radius: 5px;
+}
+#eventPopup #bookSelectList::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#00E0FF, #0096C7);
+}
+
+/* Checkbox + img + label - SỬA ĐỂ THẲNG HÀNG */
+#eventPopup #bookSelectList label {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Đảm bảo label chiếm hết chiều rộng */
+  padding: 8px 12px; /* Tăng padding để đều hơn */
+  border-radius: 6px;
+  transition: background 0.2s;
+  box-sizing: border-box; /* Để padding không làm lệch kích thước */
+}
+
+#eventPopup #bookSelectList label:hover {
+  background: rgba(0,180,216,0.2);
+}
+
+/* Checkbox: Cố định vị trí và kích thước */
+#eventPopup #bookSelectList input[type="checkbox"] {
+  flex-shrink: 0; /* Không co lại */
+  margin-right: 10px; /* Khoảng cách cố định */
+  width: 16px; /* Kích thước checkbox cố định */
+  height: 16px;
+  accent-color: #00B4D8; /* Màu checkbox khi checked */
+}
+
+/* Img: Cố định vị trí và kích thước */
+#eventPopup #bookSelectList img {
+  flex-shrink: 0; /* Không co lại */
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px; /* Khoảng cách cố định */
+  object-fit: cover; /* Để ảnh không bị méo */
+}
+
+/* Span (tên sách): Linh hoạt nhưng giới hạn để tránh lệch hàng */
+#eventPopup #bookSelectList span {
+  flex: 1; /* Chiếm hết không gian còn lại */
+  white-space: nowrap; /* Không xuống dòng */
+  overflow: hidden; /* Ẩn phần thừa */
+  text-overflow: ellipsis; /* Thêm dấu ... nếu quá dài */
+  font-size: 14px; /* Kích thước chữ nhỏ hơn để vừa */
+}
+
+/* Nút lưu sự kiện */
+#eventPopup button#saveEventBtn {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #00B4D8;
+  background: linear-gradient(135deg, #0077B6, #00B4D8);
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0,180,216,0.4);
+  margin-top: 10px;
+}
+
+#eventPopup button#saveEventBtn:hover {
+  background: linear-gradient(135deg, #00B4D8, #90E0EF);
+  color: #001F3F;
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px #00B4D8;
+}
+/* Hiệu ứng sách rực cháy */
+.book-on-fire {
+  position: relative;
+  animation: fireGlow 2s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes fireGlow {
+  0% {
+    box-shadow: 0 0 10px #ff6b00, 0 0 20px #ff8c00, 0 0 30px #ff4500;
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 20px #ff8c00, 0 0 40px #ff4500, 0 0 60px #ff0000;
+    transform: scale(1.05);
+  }
+}
+
+/* Lửa bùng cháy */
+.fire-particles {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 20px;
+  pointer-events: none;
+}
+
+.fire-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ff4500;
+  border-radius: 50%;
+  animation: fireRise 1.5s ease-out infinite;
+}
+
+@keyframes fireRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px) scale(0);
+    opacity: 0;
+  }
+}
+.review-form {
+  background: #f8fbff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-form select, .review-form input, .review-form textarea {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+.review-form button {
+  background: #0B6FA4;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.review-form button:hover {
+  background: #094f7a;
+}
+
+#reviewTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+#reviewTable th, #reviewTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#reviewTable th {
+  background: #0B6FA4;
+  color: white;
+}
+
+#reviewTable img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.action-btn {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+}
+
+.action-btn.edit {
+  color: #ffb400;
+}
+
+.action-btn.delete {
+  color: #e74c3c;
+}
+
+#admin-review-post {
+  margin: 40px auto;
+  width: 90%;
+  background: #ffffffcc;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+#admin-review-post h1 {
+  text-align: center;
+  color: #004e92;
+  margin-bottom: 20px;
+}
+
+#reviewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#reviewTable th, #reviewTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#reviewTable th {
+  background: linear-gradient(90deg, #004e92, #000428);
+  color: white;
+}
+
+#reviewTable tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.action-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  margin: 2px;
+  color: white;
+}
+
+.edit-btn {
+  background: #28a745;
+}
+
+.delete-btn {
+  background: #dc3545;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
+}

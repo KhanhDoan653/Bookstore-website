@@ -402,3 +402,519 @@ function createFireEffect() {
   }
   return `<div class="fire-particles">${particles}</div>`;
 }
+
+  document.addEventListener("DOMContentLoaded", () => {
+        function loadEvents() {
+          const events = JSON.parse(localStorage.getItem("events")) || [];
+          const products = JSON.parse(localStorage.getItem("products")) || [];
+          const container = document.getElementById("eventBannerContainer");
+
+          container.innerHTML = "";
+          if (events.length === 0) return;
+
+          // Thêm CSS
+          addCustomStyles();
+
+          // --- Đây là chỗ bạn đặt đoạn code ---
+          events.forEach((activeEvent) => {
+            const end = new Date(activeEvent.endDate).getTime();
+            const now = Date.now();
+
+            if (end <= now) return;
+
+            const banner = document.createElement("div");
+            banner.className = "event-banner premium-banner";
+
+            const waveEffect = document.createElement("div");
+            waveEffect.className = "wave-effect";
+            waveEffect.innerHTML = `
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    `;
+
+            banner.innerHTML = `
+      <div class="banner-content">
+        <div class="event-info">
+          <div class="event-badge">SỰ KIỆN ĐẶC BIỆT</div>
+          <h2 class="event-title">${activeEvent.title}</h2>
+          <p class="event-description">Ưu đãi độc quyền - Đừng bỏ lỡ!</p>
+          <div id="countdown-${activeEvent.id}" class="countdown-timer"></div>
+          <button class="cta-button">Tham gia ngay</button>
+        </div>
+        
+    <div class="products-showcase">
+  <div class="carousel-wrapper">
+    <button class="carousel-btn left-btn">❮</button>
+    <div class="book-carousel">
+      ${activeEvent.books
+        .map((id) => {
+          const product = products.find((p) => p.id == id);
+          if (!product) return "";
+
+          return `
+          <div class="book-item" data-product-id="${product.id}">
+            <div class="book-cover">
+              <img src="${product.image}" alt="${product.name}" class="book-image">
+              <div class="book-glow"></div>
+            </div>
+            <div class="book-info">
+              <h4>${product.name}</h4>
+            </div>
+          </div>
+        `;
+        })
+        .join("")}
+    </div>
+    <button class="carousel-btn right-btn">❯</button>
+  </div>
+</div>
+
+
+        </div>
+      </div>
+      
+      <div class="floating-elements">
+        <div class="floating-icon">📚</div>
+        <div class="floating-icon">🔥</div>
+        <div class="floating-icon">⭐</div>
+        <div class="floating-icon">🎁</div>
+      </div>
+    `;
+
+            banner.appendChild(waveEffect);
+            container.appendChild(banner);
+
+            const carousel = banner.querySelector(".book-carousel");
+            const leftBtn = banner.querySelector(".left-btn");
+            const rightBtn = banner.querySelector(".right-btn");
+
+            const scrollAmount = 160; // width sách + gap
+
+            leftBtn.addEventListener("click", () => {
+              carousel.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+            });
+
+            rightBtn.addEventListener("click", () => {
+              carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            });
+
+            // Các phần countdown và interactivity giữ nguyên...
+            function updateCountdown() {
+              const diff = end - Date.now();
+              const countdownElement = document.getElementById(
+                `countdown-${activeEvent.id}`
+              );
+
+              if (diff <= 0) {
+                countdownElement.innerHTML =
+                  '<div class="event-ended">Sự kiện đã kết thúc</div>';
+                banner.style.opacity = "0.7";
+                return;
+              }
+
+              const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const m = Math.floor((diff / (1000 * 60)) % 60);
+              const s = Math.floor((diff / 1000) % 60);
+
+              countdownElement.innerHTML = `
+          <div class="countdown-grid">
+            <div class="countdown-item">
+              <span class="countdown-number">${d}</span>
+              <span class="countdown-label">Ngày</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-number">${h}</span>
+              <span class="countdown-label">Giờ</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-number">${m}</span>
+              <span class="countdown-label">Phút</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-number">${s}</span>
+              <span class="countdown-label">Giây</span>
+            </div>
+          </div>
+        `;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // Chạy ngay sau khi banner được thêm vào DOM
+            banner.querySelectorAll(".book-item").forEach((item) => {
+              const cover = item.querySelector(".book-cover");
+
+              item.addEventListener("mousemove", (e) => {
+                const rect = item.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+
+                const rotateX = deltaY * 15;
+                const rotateY = deltaX * 15;
+
+                cover.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+              });
+
+              item.addEventListener("mouseleave", () => {
+                cover.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+              });
+            });
+          });
+        }
+
+        function addCustomStyles() {
+          const styles = `
+      .event-banner.premium-banner {
+        position: relative;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 30px;
+        margin: 30px 0;
+        border-radius: 20px;
+        box-shadow: 
+          0 20px 40px rgba(0,0,0,0.1),
+          0 0 80px rgba(102, 126, 234, 0.3),
+          inset 0 1px 0 rgba(255,255,255,0.2);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .banner-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
+      }
+
+      .event-info {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .event-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #ff6b6b, #ffa726);
+        padding: 8px 16px;
+        border-radius: 25px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        animation: pulse 2s infinite;
+      }
+
+      .event-title {
+        font-size: 2.5em;
+        margin: 0 0 10px 0;
+        background: linear-gradient(45deg, #fff, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      .event-description {
+        font-size: 1.1em;
+        opacity: 0.9;
+        margin-bottom: 25px;
+      }
+
+      .countdown-grid {
+        display: flex;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .countdown-item {
+        background: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+        min-width: 70px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+
+      .countdown-number {
+        font-size: 1.8em;
+        font-weight: bold;
+        display: block;
+        background: linear-gradient(45deg, #fff, #e0e0e0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .countdown-label {
+        font-size: 0.8em;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .cta-button {
+        background: linear-gradient(45deg, #ff6b6b, #ffa726);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        color: white;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+      }
+
+      .products-showcase {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .book-carousel {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 20px 10px;
+        scrollbar-width: none;
+      }
+
+      .book-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      .book-item {
+        flex: 0 0 auto;
+        width: 140px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .book-item:hover {
+        transform: translateY(-10px) scale(1.05);
+      }
+
+      .book-cover {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+      }
+
+      .book-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+      }
+
+      .book-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .book-item:hover .book-glow {
+        opacity: 1;
+      }
+
+      .book-info {
+        padding: 10px 5px;
+        text-align: center;
+      }
+
+      .book-info h4 {
+        margin: 0;
+        font-size: 0.9em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+      }
+
+      /* Đã xóa phần .price, .old-price, .new-price, .discount-badge */
+
+      .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      .floating-icon {
+        position: absolute;
+        font-size: 24px;
+        opacity: 0.3;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .floating-icon:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+      .floating-icon:nth-child(2) { top: 20%; right: 10%; animation-delay: 1.5s; }
+      .floating-icon:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 3s; }
+      .floating-icon:nth-child(4) { bottom: 10%; right: 5%; animation-delay: 4.5s; }
+
+      .wave-effect {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        overflow: hidden;
+        opacity: 0.1;
+      }
+
+      .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 100px;
+        background: url('data:image/svg+xml,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" fill="white"/></svg>');
+        animation: wave 10s linear infinite;
+      }
+
+      .wave:nth-child(2) {
+        animation-delay: -5s;
+        opacity: 0.5;
+      }
+
+      .wave:nth-child(3) {
+        animation-delay: -2s;
+        opacity: 0.3;
+      }
+
+      @keyframes wave {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-25%); }
+        100% { transform: translateX(-50%); }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+
+      .event-ended {
+        background: rgba(255,255,255,0.1);
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-style: italic;
+      }
+
+      @media (max-width: 768px) {
+        .banner-content {
+          flex-direction: column;
+          text-align: center;
+        }
+        
+        .event-title {
+          font-size: 2em;
+        }
+        
+        .countdown-grid {
+          justify-content: center;
+        }
+        
+        .countdown-item {
+          min-width: 60px;
+          padding: 10px;
+        }
+        
+        .countdown-number {
+          font-size: 1.5em;
+        }
+      }
+.book-item {
+  flex: 0 0 auto;
+  width: 140px;
+  cursor: pointer;
+  perspective: 1000px; /* Cho 3D */
+}
+
+.book-cover {
+  position: relative;
+  border-radius: 12px;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+  .carousel-wrapper {
+  position: relative;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 1.8em;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.left-btn {
+  left: 0;
+}
+
+.right-btn {
+  right: 0;
+}
+
+
+    `;
+
+          const styleSheet = document.createElement("style");
+          styleSheet.textContent = styles;
+          document.head.appendChild(styleSheet);
+        }
+
+        loadEvents();
+      });
+
+      window.addEventListener("load", () => {
+        document.getElementById("loading").classList.add("hidden");
+      });
