@@ -1,108 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ocean Horizon</title>
-    <link rel="stylesheet" href="css/lienhe.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="icon" type="image/png" href="img/Ocean_Horizon_Website_Icon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
 
-<body>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css//lienhe.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="img/Ocean_Horizon_Website_Icon.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
     <!-- Phần đầu trang -->
     <header>
-       <a href="index.html"><img src="img/Ocean_Horizon_Website_Icon.png" alt="Ocean Horizon Logo" class="logohd"></a> 
-       <a href="index.html"> Trang Chủ</a>
-         <!-- Dropdown -->
-  <div class="dropdown">
-    <a href="about.html" class="dropbtn">Giới Thiệu</a>
-    <div class="dropdown-content">
-      <a href="tuyendung.html">Tuyển Dụng</a>
-    </div>
-  </div>
+      <a href="index.html"
+        ><img
+          src="img/Ocean_Horizon_Website_Icon.png"
+          alt="Ocean Horizon Logo"
+          class="logohd"
+      /></a>
+      <a href="index.html"> Trang Chủ</a>
+      <!-- Dropdown -->
+      <div class="dropdown">
+        <a href="about.html" class="dropbtn">Giới Thiệu</a>
+        <div class="dropdown-content">
+          <a href="tuyendung.html">Tuyển Dụng</a>
+          <a href="DanhGia.html">Đánh Giá</a>
+        </div>
+      </div>
 
-        
-<!-- Ô tìm kiếm -->
-<form action="#" method="get" class="search-box" onsubmit="return false;">
-  <input type="text" id="searchInput" placeholder="Tìm kiếm sách..." required>
-  <button type="button" onclick="searchProducts()">🔍</button>
-</form>
-  <a href="contact.html">Tư Vấn</a>
-     <a href="shop.html" class="cart-link">
-  Giỏ hàng <span id="cart-count">0</span>
-</a>
+      <!-- Ô tìm kiếm -->
+      <form action="#" method="get" class="search-box" onsubmit="return false;">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Tìm kiếm sách..."
+          required
+        />
+        <button type="button" onclick="searchProducts()">🔍</button>
+      </form>
+      <a href="contact.html">Tư Vấn</a>
+      <a href="shop.html" class="cart-link">
+        Giỏ hàng <span id="cart-count">0</span>
+      </a>
 
-       <a href="login.html" id="loginLink"> Đăng Nhập</a>
-
-
+      <a href="login.html" id="loginLink"> Đăng Nhập</a>
     </header>
 
     <main class="contact-container">
-        <h2>LIÊN HỆ VỚI CHÚNG TÔI</h2>
-        <div class="contact-info">
-            <div class="contact-left">
-                <img src="img/HACH.jpg" alt="Hình ảnh cửa hàng" />
-                <p><strong>Địa chỉ chính:</strong> 284 Võ Thị Sáu, Thống Nhất, Thành phố Biên Hòa, Đồng Nai</p>
-                <p><strong>Hotline:</strong> 02873039079</p>
-                <p><strong>Email:</strong>  support@oceanhorizon.com</p>
-                <h3>Bản đồ</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15668.850784776192!2d106.81104108715819!3d10.947299700000011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dea57b363c35%3A0x84471ae50eeda23a!2zVGhlIENvZmZlZSBIb3VzZSAtIFbDtSBUaOG7iyBTw6F1!5e0!3m2!1svi!2s!4v1749373401608!5m2!1svi!2s"
-                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-
-            <div class="contact-right">
-                <h3>Gửi lời nhắn</h3>
-               <form id="contactForm" action="https://formspree.io/f/xqayqvge" method="POST">
-  <input type="text" name="name" placeholder="Họ tên của bạn" required />
-  <input type="email" name="email" placeholder="Email" required />
-  <input type="text" name="phone" placeholder="Số điện thoại" required />
-  <textarea name="message" rows="5" placeholder="Nội dung lời nhắn" required></textarea>
-  <button type="submit">Gửi đi</button>
-</form>
-
-            </div>
+      <h2>LIÊN HỆ VỚI CHÚNG TÔI</h2>
+      <div class="contact-info">
+        <div class="contact-left">
+          <img src="img/HACH.jpg" alt="Hình ảnh cửa hàng" />
+          <p>
+            <strong>Địa chỉ chính:</strong> 284 Võ Thị Sáu, Thống Nhất, Thành
+            phố Biên Hòa, Đồng Nai
+          </p>
+          <p><strong>Hotline:</strong> 02873039079</p>
+          <p><strong>Email:</strong> support@oceanhorizon.com</p>
+          <h3>Bản đồ</h3>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15668.850784776192!2d106.81104108715819!3d10.947299700000011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dea57b363c35%3A0x84471ae50eeda23a!2zVGhlIENvZmZlZSBIb3VzZSAtIFbDtSBUaOG7iyBTw6F1!5e0!3m2!1svi!2s!4v1749373401608!5m2!1svi!2s"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
-        <section class="store-contacts">
-    <h2 class="section-title">HỆ THỐNG CỬA HÀNG TOÀN QUỐC (10 CH)</h2>
-    <div class="store-list">
-        <!-- Đồng Nai -->
-        <div class="store-group">
+
+        <div class="contact-right">
+          <h3>Gửi lời nhắn</h3>
+          <form
+            id="contactForm"
+            action="https://formspree.io/f/xqayqvge"
+            method="POST"
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Họ tên của bạn"
+              required
+            />
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Số điện thoại"
+              required
+            />
+            <textarea
+              name="message"
+              rows="5"
+              placeholder="Nội dung lời nhắn"
+              required
+            ></textarea>
+            <button type="submit">Gửi đi</button>
+          </form>
+        </div>
+      </div>
+      <section class="store-contacts">
+        <h2 class="section-title">HỆ THỐNG CỬA HÀNG TOÀN QUỐC (10 CH)</h2>
+        <div class="store-list">
+          <!-- Đồng Nai -->
+          <div class="store-group">
             <h3>ĐỒNG NAI (1 CH)</h3>
             <p>284 Võ Thị Sáu, Thống Nhất, TP. Biên Hòa, Đồng Nai</p>
             <div class="store-images">
-                <img src="img/DN1.jpg" alt="Cửa hàng Đồng Nai">
+              <img src="img/DN1.jpg" alt="Cửa hàng Đồng Nai" />
             </div>
-        </div>
+          </div>
 
-        <!-- Hà Nội -->
-        <div class="store-group">
+          <!-- Hà Nội -->
+          <div class="store-group">
             <h3>HÀ NỘI (2 CH)</h3>
             <p>92 Lê Thanh Nghị, Hai Bà Trưng, Hà Nội</p>
             <p>149 Nguyễn Văn Cừ, Ngọc Lâm, Long Biên, Hà Nội</p>
             <div class="store-images">
-                <img src="img/HN1.jpg" alt="Cửa hàng Hà Nội 1">
-                <img src="img/HN2.jpg" alt="Cửa hàng Hà Nội 2">
+              <img src="img/HN1.jpg" alt="Cửa hàng Hà Nội 1" />
+              <img src="img/HN2.jpg" alt="Cửa hàng Hà Nội 2" />
             </div>
-        </div>
+          </div>
 
-        <!-- Hải Phòng -->
-        <div class="store-group">
+          <!-- Hải Phòng -->
+          <div class="store-group">
             <h3>HẢI PHÒNG (2 CH)</h3>
             <p>Tầng 01 Aeon Mall, Q.Lê Chân, Hải Phòng</p>
             <p>15 Trần Phú, Ngô Quyền, Hải Phòng</p>
             <div class="store-images">
-                <img src="img/HP1.jpg" alt="Cửa hàng Hải Phòng 1">
-                <img src="img/HP2.jpg" alt="Cửa hàng Hải Phòng 2">
+              <img src="img/HP1.jpg" alt="Cửa hàng Hải Phòng 1" />
+              <img src="img/HP2.jpg" alt="Cửa hàng Hải Phòng 2" />
             </div>
-        </div>
+          </div>
 
-        <!-- Hồ Chí Minh -->
-        <div class="store-group">
+          <!-- Hồ Chí Minh -->
+          <div class="store-group">
             <h3>HỒ CHÍ MINH (5 CH)</h3>
             <p>TTTM Crescent Mall, 101 Tôn Dật Tiên, Quận 7</p>
             <p>71 Hoàng Văn Thái, Tân Phú, Quận 7</p>
@@ -110,43 +151,45 @@
             <p>64A Lữ Gia, Phường 15, Quận 11</p>
             <p>4 - 6 Ấp Bắc, Tân Bình</p>
             <div class="store-images">
-                <img src="img/HCM1.jpg" alt="Cửa hàng HCM 1">
-                <img src="img/HCM2.jpg" alt="Cửa hàng HCM 2">
+              <img src="img/HCM1.jpg" alt="Cửa hàng HCM 1" />
+              <img src="img/HCM2.jpg" alt="Cửa hàng HCM 2" />
             </div>
+          </div>
         </div>
-    </div>
-</section>
-
+      </section>
     </main>
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-section">
-      <h3>Ocean Horizon</h3>
-      <p>Website học tập và tư vấn trực tuyến.<br>Đem lại tri thức mọi lúc, mọi nơi.</p>
-    </div>
-    
-    <div class="footer-section">
-      <h3>Liên hệ</h3>
-      <p>Email: support@oceanhorizon.com</p>
-      <p>Hotline: +84 123 456 789</p>
-    </div>
-    
-<div class="footer-section">
-  <h3>Kết nối</h3>
-  <div class="social-links">
-    <a href="https://www.facebook.com/profile.php?id=61582052062752"><i class="fab fa-facebook-f"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-twitter"></i></a>
-  </div>
-</div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2025 Ocean Horizon. All rights reserved.</p>
-  </div>
-</footer>
-    <script src="js/lienhe.js"></script>
-   
-</body>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Ocean Horizon</h3>
+          <p>
+            Website học tập và tư vấn trực tuyến.<br />Đem lại tri thức mọi lúc,
+            mọi nơi.
+          </p>
+        </div>
 
+        <div class="footer-section">
+          <h3>Liên hệ</h3>
+          <p>Email: support@oceanhorizon.com</p>
+          <p>Hotline: +84 123 456 789</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Kết nối</h3>
+          <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61582052062752"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ocean Horizon. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="js/lienhe.js"></script>
+  </body>
 </html>

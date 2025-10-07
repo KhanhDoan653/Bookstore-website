@@ -578,6 +578,137 @@ li:hover {
     opacity: 0;
   }
 }
+.review-form {
+  background: #f8fbff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-form select, .review-form input, .review-form textarea {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+.review-form button {
+  background: #0B6FA4;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.review-form button:hover {
+  background: #094f7a;
+}
+
+#reviewTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+#reviewTable th, #reviewTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#reviewTable th {
+  background: #0B6FA4;
+  color: white;
+}
+
+#reviewTable img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.action-btn {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+}
+
+.action-btn.edit {
+  color: #ffb400;
+}
+
+.action-btn.delete {
+  color: #e74c3c;
+}
+
+#admin-review-post {
+  margin: 40px auto;
+  width: 90%;
+  background: #ffffffcc;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+#admin-review-post h1 {
+  text-align: center;
+  color: #004e92;
+  margin-bottom: 20px;
+}
+
+#reviewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#reviewTable th, #reviewTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#reviewTable th {
+  background: linear-gradient(90deg, #004e92, #000428);
+  color: white;
+}
+
+#reviewTable tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.action-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  margin: 2px;
+  color: white;
+}
+
+.edit-btn {
+  background: #28a745;
+}
+
+.delete-btn {
+  background: #dc3545;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
+}
+
 </style>
 </head>
 <body>
@@ -615,6 +746,52 @@ li:hover {
     <button id="addProductBtn">Thêm Sản Phẩm</button>
     <div id="adminProductList"></div>
   </section>
+
+  <section id="review-section">
+ <h1>✨ Thêm Review Sách ✨</h1>
+<div class="review-form">
+  <input type="text" id="bookTitle" placeholder="Tên sách">
+  <input type="text" id="reviewAuthor" placeholder="Tên người viết">
+  <select id="bookRating">
+    <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+    <option value="4">⭐️⭐️⭐️⭐️</option>
+    <option value="3">⭐️⭐️⭐️</option>
+    <option value="2">⭐️⭐️</option>
+    <option value="1">⭐️</option>
+  </select>
+  <textarea id="reviewContent" placeholder="Cảm nhận của bạn..."></textarea>
+
+  <!-- Chọn hình ảnh -->
+  <label for="bookImage">Chọn ảnh bìa:</label>
+  <input type="file" id="bookImage" accept="image/*">
+
+  <button onclick="saveReview()">💾 Lưu Review</button>
+</div>
+
+
+</section>
+<section id="admin-review-post">
+  <h1>📚 Quản Lý Bài Review 📚</h1>
+  <table id="reviewTable">
+    <thead>
+      <tr>
+        <th>Tên Sách</th>
+        <th>Tác Giả Review</th>
+        <th>Đánh Giá</th>
+        <th>Ngày</th>
+        <th>Hành Động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Các bài review sẽ được hiển thị ở đây -->
+    </tbody>
+  </table>
+  <button id="clearAllBtn" style="margin:10px; background:#dc3545; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;">
+🗑️ Xóa Tất Cả Review
+</button>
+
+</section>
+
 
 
 
@@ -949,6 +1126,130 @@ function deleteEvent(i) {
     renderEventList();
   }
 }
+ 
+
+function saveReview() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('reviewAuthor').value.trim();
+  const rating = document.getElementById('bookRating').value;
+  const content = document.getElementById('reviewContent').value.trim();
+  const imageInput = document.getElementById('bookImage');
+  const date = new Date().toLocaleDateString();
+
+  if (!title || !author || !content) {
+    alert("Vui lòng nhập đầy đủ thông tin!");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function() {
+    const imageData = reader.result;
+
+    let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+    // Ngăn trùng bài
+    const exists = reviews.some(r => r.title === title && r.author === author);
+    if (exists) {
+      alert("Bài review này đã tồn tại!");
+      return;
+    }
+
+    const newReview = { title, author, rating, content, date, image: imageData };
+    reviews.push(newReview);
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+
+    alert("✅ Đã lưu bài review!");
+    loadAdminReviews();
+    clearForm();
+  };
+  if (imageInput.files[0]) {
+    reader.readAsDataURL(imageInput.files[0]);
+  } else {
+    reader.onload(); // nếu không có ảnh
+  }
+}
+
+function loadAdminReviews() {
+  const tableBody = document.querySelector("#reviewTable tbody");
+  tableBody.innerHTML = "";
+
+  const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+  reviews.forEach((r, i) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${r.title}</td>
+      <td>${r.author}</td>
+      <td>${"⭐".repeat(r.rating)}</td>
+      <td>${r.date}</td>
+      <td>
+        <button class="action-btn edit-btn" onclick="editReview(${i})">Sửa</button>
+        <button class="action-btn delete-btn" onclick="deleteReview(${i})">Xóa</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+function editReview(index) {
+  const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+  const r = reviews[index];
+
+  // Đổ dữ liệu lên form
+  document.getElementById('bookTitle').value = r.title;
+  document.getElementById('reviewAuthor').value = r.author;
+  document.getElementById('bookRating').value = r.rating;
+  document.getElementById('reviewContent').value = r.content;
+
+  // Khi admin nhấn “Lưu” thì cập nhật lại bài đó thay vì thêm mới
+  const saveBtn = document.querySelector('.review-form button');
+  saveBtn.textContent = "🔄 Cập nhật Review";
+  saveBtn.onclick = function() {
+    r.title = document.getElementById('bookTitle').value.trim();
+    r.author = document.getElementById('reviewAuthor').value.trim();
+    r.rating = document.getElementById('bookRating').value;
+    r.content = document.getElementById('reviewContent').value.trim();
+    r.date = new Date().toLocaleDateString();
+
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+    loadAdminReviews();
+    clearForm();
+
+    // Khôi phục nút về trạng thái ban đầu
+    saveBtn.textContent = "💾 Lưu Review";
+    saveBtn.onclick = saveReview;
+
+    alert("✅ Đã cập nhật bài review!");
+  };
+}
+
+function deleteReview(index) {
+  let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+  if (confirm("Bạn có chắc muốn xóa bài này không?")) {
+    reviews.splice(index, 1);
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+    loadAdminReviews();
+  }
+}
+
+function clearForm() {
+  document.getElementById('bookTitle').value = '';
+  document.getElementById('reviewAuthor').value = '';
+  document.getElementById('reviewContent').value = '';
+  document.getElementById('bookRating').value = '5';
+  document.getElementById('bookImage').value = '';
+}
+
+// Gọi khi load trang
+window.onload = loadAdminReviews;
+
+document.getElementById("clearAllBtn").addEventListener("click", () => {
+  if (confirm("Bạn có chắc muốn xóa toàn bộ bài review không?")) {
+    localStorage.removeItem("reviews");
+    loadAdminReviews();
+    alert("✅ Tất cả bài review đã bị xóa!");
+  }
+});
 
 // === Gọi render ban đầu ===
 renderEventList();
