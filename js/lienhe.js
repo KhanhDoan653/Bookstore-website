@@ -143,3 +143,48 @@ if (!loginLink) return;
     });
   }
 });
+
+// === Chat Box AI với popup ===
+function toggleChatPopup() {
+  const popup = document.getElementById("chatbotPopup");
+  popup.classList.toggle("active");
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (message === "") return;
+
+  const chatBody = document.getElementById("chatBody");
+
+  // Tin nhắn người dùng
+  const userMsg = document.createElement("div");
+  userMsg.className = "user-message";
+  userMsg.textContent = message;
+  chatBody.appendChild(userMsg);
+
+  input.value = "";
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Giả lập phản hồi AI
+  setTimeout(() => {
+    const botMsg = document.createElement("div");
+    botMsg.className = "bot-message";
+    botMsg.textContent = generateBotReply(message);
+    chatBody.appendChild(botMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 800);
+}
+
+function generateBotReply(msg) {
+  msg = msg.toLowerCase();
+  if (msg.includes("địa chỉ") || msg.includes("ở đâu"))
+    return "Cửa hàng chính của Ocean Horizon nằm tại 284 Võ Thị Sáu, Biên Hòa, Đồng Nai 🌊";
+  if (msg.includes("liên hệ") || msg.includes("hotline"))
+    return "Bạn có thể gọi hotline 02873039079 hoặc gửi email đến support@oceanhorizon.com 📞";
+  if (msg.includes("mở cửa") || msg.includes("giờ làm"))
+    return "Chúng tôi mở cửa từ 8:00 đến 21:00 tất cả các ngày trong tuần 🕗";
+  if (msg.includes("shop") || msg.includes("sản phẩm"))
+    return "Bạn có thể ghé trang shop.html để xem các sản phẩm hiện có 🛍️";
+  return "Cảm ơn bạn đã nhắn tin! Tôi sẽ cố gắng hiểu rõ hơn nếu bạn nói cụ thể hơn nhé 😊";
+}

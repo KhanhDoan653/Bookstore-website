@@ -158,6 +158,32 @@
         </div>
       </section>
     </main>
+
+<!-- Chat Box AI -->
+<div class="chatbot-button" id="chatbotButton" onclick="toggleChatPopup()">💬</div>
+
+<div class="chatbot-popup" id="chatbotPopup">
+  <div class="chatbot-header">
+    🤖 Hỗ trợ AI
+    <span class="close-btn" onclick="toggleChatPopup()">❌</span>
+  </div>
+  <div class="chatbot-body" id="chatBody">
+    <div class="bot-message">
+      Xin chào 👋! Tôi là trợ lý Ocean Horizon. Tôi có thể giúp gì cho bạn?
+    </div>
+  </div>
+  <div class="chatbot-footer">
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Nhập câu hỏi..."
+      onkeydown="if(event.key==='Enter') sendMessage()"
+    />
+    <button onclick="sendMessage()">Gửi</button>
+  </div>
+</div>
+
+
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
